@@ -4594,5 +4594,96 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
     });
+    /* ===== MAIN NAVIGATION FIX ===== */
+
+const navTargets = {
+  "dashboard": ["dashboard", "home"],
+  "assignments": ["assignments", "assignment"],
+  "grades": ["grades", "grade"],
+  "tests": ["tests", "test", "exams"],
+  "lectures": ["lectures", "lecture", "syllabus"],
+  "syllabus": ["syllabus", "lectures"],
+  "notes": ["notes", "note"]
+};
+
+function goToPlannerSection(sectionNames) {
+  let section = null;
+
+  for (const name of sectionNames) {
+    section = findSection([name]);
+    if (section) break;
+
+    section = document.getElementById(name);
+    if (section) break;
+
+    section = document.querySelector(
+      `[data-section="${name}"], [id="${name}"], .${name}-section`
+    );
+
+    if (section) break;
+  }
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
+
+/* Make the top navigation buttons work */
+document.querySelectorAll("button, a").forEach((element) => {
+  const text = element.textContent.trim().toLowerCase();
+
+  if (text.includes("dashboard")) {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      goToPlannerSection(navTargets.dashboard);
+    });
+  }
+
+  else if (text.includes("assignment")) {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      goToPlannerSection(navTargets.assignments);
+    });
+  }
+
+  else if (text.includes("grade")) {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      goToPlannerSection(navTargets.grades);
+    });
+  }
+
+  else if (
+    text.includes("test") ||
+    text.includes("exam")
+  ) {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      goToPlannerSection(navTargets.tests);
+    });
+  }
+
+  else if (
+    text.includes("lecture") ||
+    text.includes("syllabus")
+  ) {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      goToPlannerSection(navTargets.lectures);
+    });
+  }
+
+  else if (text.includes("note")) {
+    element.addEventListener("click", (event) => {
+      event.preventDefault();
+      goToPlannerSection(navTargets.notes);
+    });
+  }
+});
+
+/* ===== END MAIN NAVIGATION FIX ===== */
   </script>
 </script>
