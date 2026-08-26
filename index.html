@@ -4729,3 +4729,476 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+<!-- FINAL STUDENT PLANNER FEATURES -->
+<style>
+.planner-extra {
+  display: none;
+}
+
+.planner-extra.active {
+  display: block;
+}
+
+.extra-card {
+  background: white;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.06);
+}
+
+.extra-card h2 {
+  margin-top: 0;
+}
+
+.extra-input {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.extra-button {
+  border: none;
+  border-radius: 10px;
+  padding: 11px 18px;
+  cursor: pointer;
+  background: #263238;
+  color: white;
+  margin-top: 8px;
+}
+
+.extra-list {
+  margin-top: 15px;
+}
+
+.extra-item {
+  padding: 13px;
+  margin: 8px 0;
+  background: #f5f6fa;
+  border-radius: 10px;
+}
+</style>
+
+<script>
+/* Student Planner - extra features */
+
+function plannerSave(key, value) {
+  localStorage.setItem("studentPlanner_" + key, JSON.stringify(value));
+}
+
+function plannerLoad(key) {
+  const saved = localStorage.getItem("studentPlanner_" + key);
+  return saved ? JSON.parse(saved) : [];
+}
+
+/* TESTS */
+function addTest() {
+  const name = document.getElementById("testName").value;
+  const date = document.getElementById("testDate").value;
+  const className = document.getElementById("testClass").value;
+
+  if (!name || !date) {
+    alert("Please enter a test name and date.");
+    return;
+  }
+
+  const tests = plannerLoad("tests");
+
+  tests.push({
+    name: name,
+    date: date,
+    className: className
+  });
+
+  plannerSave("tests", tests);
+
+  document.getElementById("testName").value = "";
+  document.getElementById("testDate").value = "";
+  document.getElementById("testClass").value = "";
+
+  displayTests();
+}
+
+function displayTests() {
+  const list = document.getElementById("testList");
+  if (!list) return;
+
+  const tests = plannerLoad("tests");
+
+  list.innerHTML = "";
+
+  if (tests.length === 0) {
+    list.innerHTML = "<p>No tests added yet.</p>";
+    return;
+  }
+
+  tests.forEach((test, index) => {
+    list.innerHTML += `
+      <div class="extra-item">
+        <strong>${test.name}</strong><br>
+        ${test.className || "Class not specified"}<br>
+        📅 ${test.date}
+        <br>
+        <button class="extra-button" onclick="deleteTest(${index})">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+function deleteTest(index) {
+  const tests = plannerLoad("tests");
+  tests.splice(index, 1);
+  plannerSave("tests", tests);
+  displayTests();
+}
+
+
+/* LECTURES / SYLLABI */
+function addLecture() {
+  const title = document.getElementById("lectureTitle").value;
+  const className = document.getElementById("lectureClass").value;
+  const notes = document.getElementById("lectureNotes").value;
+
+  if (!title) {
+    alert("Please enter a lecture or syllabus title.");
+    return;
+  }
+
+  const lectures = plannerLoad("lectures");
+
+  lectures.push({
+    title: title,
+    className: className,
+    notes: notes
+  });
+
+  plannerSave("lectures", lectures);
+
+  document.getElementById("lectureTitle").value = "";
+  document.getElementById("lectureClass").value = "";
+  document.getElementById("lectureNotes").value = "";
+
+  displayLectures();
+}
+
+function displayLectures() {
+  const list = document.getElementById("lectureList");
+  if (!list) return;
+
+  const lectures = plannerLoad("lectures");
+
+  list.innerHTML = "";
+
+  if (lectures.length === 0) {
+    list.innerHTML = "<p>No lectures or syllabi added yet.</p>";
+    return;
+  }
+
+  lectures.forEach((lecture, index) => {
+    list.innerHTML += `
+      <div class="extra-item">
+        <strong>${lecture.title}</strong><br>
+        ${lecture.className || "Class not specified"}<br>
+        ${lecture.notes || ""}
+        <br>
+        <button class="extra-button" onclick="deleteLecture(${index})">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+function deleteLecture(index) {
+  const lectures = plannerLoad("lectures");
+  lectures.splice(index, 1);
+  plannerSave("lectures", lectures);
+  displayLectures();
+}
+
+
+/* CALENDAR */
+function addCalendarItem() {
+  const title = document.getElementById("calendarTitle").value;
+  const date = document.getElementById("calendarDate").value;
+
+  if (!title || !date) {
+    alert("Please enter an event and date.");
+    return;
+  }
+
+  const events = plannerLoad("calendar");
+
+  events.push({
+    title: title,
+    date: date
+  });
+
+  plannerSave("calendar", events);
+
+  document.getElementById("calendarTitle").value = "";
+  document.getElementById("calendarDate").value = "";
+
+  displayCalendar();
+}
+
+function displayCalendar() {
+  const list = document.getElementById("calendarList");
+  if (!list) return;
+
+  const events = plannerLoad("calendar");
+
+  list.innerHTML = "";
+
+  events.sort((a,b) => a.date.localeCompare(b.date));
+
+  if (events.length === 0) {
+    list.innerHTML = "<p>No calendar events yet.</p>";
+    return;
+  }
+
+  events.forEach((event, index) => {
+    list.innerHTML += `
+      <div class="extra-item">
+        <strong>${event.title}</strong><br>
+        📅 ${event.date}
+        <br>
+        <button class="extra-button" onclick="deleteCalendarItem(${index})">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+function deleteCalendarItem(index) {
+  const events = plannerLoad("calendar");
+  events.splice(index, 1);
+  plannerSave("calendar", events);
+  displayCalendar();
+}
+
+
+/* TO-DO LIST */
+function addTodo() {
+  const text = document.getElementById("todoText").value;
+
+  if (!text) {
+    alert("Please enter a task.");
+    return;
+  }
+
+  const todos = plannerLoad("todos");
+
+  todos.push({
+    text: text,
+    completed: false
+  });
+
+  plannerSave("todos", todos);
+
+  document.getElementById("todoText").value = "";
+
+  displayTodos();
+}
+
+function displayTodos() {
+  const list = document.getElementById("todoList");
+  if (!list) return;
+
+  const todos = plannerLoad("todos");
+
+  list.innerHTML = "";
+
+  if (todos.length === 0) {
+    list.innerHTML = "<p>No to-do items yet.</p>";
+    return;
+  }
+
+  todos.forEach((todo, index) => {
+    list.innerHTML += `
+      <div class="extra-item">
+        <input type="checkbox"
+          ${todo.completed ? "checked" : ""}
+          onchange="toggleTodo(${index})">
+        ${todo.completed ? "<s>" + todo.text + "</s>" : todo.text}
+
+        <br>
+
+        <button class="extra-button" onclick="deleteTodo(${index})">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+function toggleTodo(index) {
+  const todos = plannerLoad("todos");
+
+  todos[index].completed = !todos[index].completed;
+
+  plannerSave("todos", todos);
+
+  displayTodos();
+}
+
+function deleteTodo(index) {
+  const todos = plannerLoad("todos");
+
+  todos.splice(index, 1);
+
+  plannerSave("todos", todos);
+
+  displayTodos();
+}
+
+
+/* CREATE THE NEW SECTIONS */
+function createExtraSections() {
+
+  if (document.getElementById("plannerExtraSections")) return;
+
+  const container = document.createElement("div");
+
+  container.id = "plannerExtraSections";
+
+  container.innerHTML = `
+
+    <section id="tests" class="planner-extra">
+      <div class="extra-card">
+        <h2>🧪 Tests</h2>
+
+        <input id="testName"
+          class="extra-input"
+          placeholder="Test name">
+
+        <input id="testClass"
+          class="extra-input"
+          placeholder="Class">
+
+        <input id="testDate"
+          class="extra-input"
+          type="date">
+
+        <button class="extra-button" onclick="addTest()">
+          Add Test
+        </button>
+
+        <div id="testList" class="extra-list"></div>
+      </div>
+    </section>
+
+
+    <section id="lectures" class="planner-extra">
+      <div class="extra-card">
+        <h2>📚 Lectures / Syllabi</h2>
+
+        <input id="lectureTitle"
+          class="extra-input"
+          placeholder="Lecture or syllabus title">
+
+        <input id="lectureClass"
+          class="extra-input"
+          placeholder="Class">
+
+        <textarea id="lectureNotes"
+          class="extra-input"
+          placeholder="Notes"></textarea>
+
+        <button class="extra-button" onclick="addLecture()">
+          Add Lecture / Syllabus
+        </button>
+
+        <div id="lectureList" class="extra-list"></div>
+      </div>
+    </section>
+
+
+    <section id="calendar" class="planner-extra">
+      <div class="extra-card">
+        <h2>📅 Calendar</h2>
+
+        <input id="calendarTitle"
+          class="extra-input"
+          placeholder="Event, assignment, test, etc.">
+
+        <input id="calendarDate"
+          class="extra-input"
+          type="date">
+
+        <button class="extra-button" onclick="addCalendarItem()">
+          Add to Calendar
+        </button>
+
+        <div id="calendarList" class="extra-list"></div>
+      </div>
+    </section>
+
+
+    <section id="todo" class="planner-extra">
+      <div class="extra-card">
+        <h2>✅ To-Do List</h2>
+
+        <input id="todoText"
+          class="extra-input"
+          placeholder="What do you need to do?">
+
+        <button class="extra-button" onclick="addTodo()">
+          Add Task
+        </button>
+
+        <div id="todoList" class="extra-list"></div>
+      </div>
+    </section>
+
+  `;
+
+  document.body.appendChild(container);
+
+  displayTests();
+  displayLectures();
+  displayCalendar();
+  displayTodos();
+}
+
+
+/* NAVIGATION FOR THE NEW SECTIONS */
+function openPlannerSection(section) {
+
+  createExtraSections();
+
+  document.querySelectorAll(".planner-extra").forEach(s => {
+    s.classList.remove("active");
+  });
+
+  const selected = document.getElementById(section);
+
+  if (selected) {
+    selected.classList.add("active");
+
+    selected.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
+
+
+/* MAKE COMMON BUTTONS WORK */
+document.addEventListener("DOMContentLoaded", function() {
+
+  createExtraSections();
+
+  displayTests();
+  displayLectures();
+  displayCalendar();
+  displayTodos();
+
+});
+</script>
