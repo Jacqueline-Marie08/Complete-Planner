@@ -2264,3 +2264,266 @@ function calculateGPA() {
 displayCourses();
 calculateGPA();
 </script>
+<!-- WEEKLY SCHEDULE, NOTES & TO-DO LIST -->
+
+<section class="planner-section">
+  <h2>📅 Weekly Class Schedule</h2>
+
+  <div class="schedule-form">
+    <input type="text" id="scheduleClass" placeholder="Class name">
+
+    <select id="scheduleDay">
+      <option value="">Day</option>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+    </select>
+
+    <input type="time" id="scheduleTime">
+
+    <input type="text" id="scheduleLocation" placeholder="Location">
+
+    <button onclick="addSchedule()">Add Class</button>
+  </div>
+
+  <div id="scheduleList"></div>
+</section>
+
+
+<section class="planner-section">
+  <h2>📝 Notes</h2>
+
+  <textarea
+    id="notesBox"
+    placeholder="Write your notes here..."
+    rows="8"
+  ></textarea>
+
+  <button onclick="saveNotes()">Save Notes</button>
+  <p id="notesSaved"></p>
+</section>
+
+
+<section class="planner-section">
+  <h2>🎯 To-Do List</h2>
+
+  <div class="todo-form">
+    <input
+      type="text"
+      id="todoInput"
+      placeholder="What do you need to do?"
+    >
+
+    <button onclick="addTodo()">Add Task</button>
+  </div>
+
+  <div id="todoList"></div>
+</section>
+
+
+<script>
+
+/* =========================
+   WEEKLY CLASS SCHEDULE
+========================= */
+
+let schedule = JSON.parse(localStorage.getItem("schedule")) || [];
+
+function addSchedule() {
+  const className = document.getElementById("scheduleClass").value.trim();
+  const day = document.getElementById("scheduleDay").value;
+  const time = document.getElementById("scheduleTime").value;
+  const location = document.getElementById("scheduleLocation").value.trim();
+
+  if (!className || !day || !time) {
+    alert("Please enter the class, day, and time.");
+    return;
+  }
+
+  schedule.push({
+    className,
+    day,
+    time,
+    location
+  });
+
+  localStorage.setItem("schedule", JSON.stringify(schedule));
+
+  document.getElementById("scheduleClass").value = "";
+  document.getElementById("scheduleDay").value = "";
+  document.getElementById("scheduleTime").value = "";
+  document.getElementById("scheduleLocation").value = "";
+
+  displaySchedule();
+}
+
+function displaySchedule() {
+  const list = document.getElementById("scheduleList");
+
+  list.innerHTML = "";
+
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday"
+  ];
+
+  days.forEach(day => {
+
+    const dayClasses = schedule
+      .filter(item => item.day === day)
+      .sort((a, b) => a.time.localeCompare(b.time));
+
+    if (dayClasses.length > 0) {
+
+      const dayDiv = document.createElement("div");
+      dayDiv.className = "schedule-day";
+
+      dayDiv.innerHTML = `<h3>${day}</h3>`;
+
+      dayClasses.forEach(item => {
+
+        const index = schedule.indexOf(item);
+
+        const classDiv = document.createElement("div");
+        classDiv.className = "schedule-item";
+
+        classDiv.innerHTML = `
+          <strong>${item.time}</strong>
+          — ${item.className}
+          ${item.location ? ` — ${item.location}` : ""}
+          <button onclick="deleteSchedule(${index})">
+            Delete
+          </button>
+        `;
+
+        dayDiv.appendChild(classDiv);
+      });
+
+      list.appendChild(dayDiv);
+    }
+  });
+}
+
+function deleteSchedule(index) {
+  schedule.splice(index, 1);
+
+  localStorage.setItem("schedule", JSON.stringify(schedule));
+
+  displaySchedule();
+}
+
+
+/* =========================
+   NOTES
+========================= */
+
+const savedNotes = localStorage.getItem("studentNotes");
+
+if (savedNotes) {
+  document.getElementById("notesBox").value = savedNotes;
+}
+
+function saveNotes() {
+
+  const notes = document.getElementById("notesBox").value;
+
+  localStorage.setItem("studentNotes", notes);
+
+  document.getElementById("notesSaved").textContent =
+    "✓ Notes saved!";
+}
+
+
+/* =========================
+   TO-DO LIST
+========================= */
+
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+function addTodo() {
+
+  const input = document.getElementById("todoInput");
+
+  const text = input.value.trim();
+
+  if (!text) {
+    alert("Please enter a task.");
+    return;
+  }
+
+  todos.push({
+    text: text,
+    completed: false
+  });
+
+  localStorage.setItem("todos", JSON.stringify(todos));
+
+  input.value = "";
+
+  displayTodos();
+}
+
+function displayTodos() {
+
+  const list = document.getElementById("todoList");
+
+  list.innerHTML = "";
+
+  todos.forEach((todo, index) => {
+
+    const div = document.createElement("div");
+
+    div.className = "todo-item";
+
+    div.innerHTML = `
+      <input
+        type="checkbox"
+        ${todo.completed ? "checked" : ""}
+        onchange="toggleTodo(${index})"
+      >
+
+      <span style="${todo.completed ? "text-decoration: line-through;" : ""}">
+        ${todo.text}
+      </span>
+
+      <button onclick="deleteTodo(${index})">
+        Delete
+      </button>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+function toggleTodo(index) {
+
+  todos[index].completed = !todos[index].completed;
+
+  localStorage.setItem("todos", JSON.stringify(todos));
+
+  displayTodos();
+}
+
+function deleteTodo(index) {
+
+  todos.splice(index, 1);
+
+  localStorage.setItem("todos", JSON.stringify(todos));
+
+  displayTodos();
+}
+
+
+/* =========================
+   LOAD EVERYTHING
+========================= */
+
+displaySchedule();
+displayTodos();
+
+</script>
