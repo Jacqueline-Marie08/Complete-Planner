@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Planner </title>
+  <title>Student Planner</title>
+
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
     }
 
     body {
-      background: #f7f8fc;
-      color: #333;
+      margin: 0;
+      background: #f5f6fa;
+      color: #263238;
     }
 
     header {
-      background: #6c63ff;
+      background: #6c63a8;
       color: white;
       padding: 25px;
       text-align: center;
     }
 
     header h1 {
+      margin: 0;
       font-size: 32px;
-      margin-bottom: 8px;
     }
 
     header p {
-      opacity: 0.9;
+      margin: 8px 0 0;
     }
 
     .container {
@@ -39,369 +39,869 @@
       padding: 0 20px;
     }
 
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+
+    .tab-button.active {
+      background: #6c63a8;
+      color: white;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
     }
 
     .card {
       background: white;
       border-radius: 15px;
       padding: 25px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
     }
 
-    .card h2 {
-      margin-bottom: 15px;
-      color: #6c63ff;
+    h2 {
+      margin-top: 0;
     }
 
-    .schedule {
-      margin-bottom: 30px;
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
     }
 
-    .class {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      margin-bottom: 10px;
-      background: #f1f0ff;
-      border-radius: 10px;
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d5d5d5;
+      border-radius: 8px;
+      font-size: 15px;
     }
 
-    .assignments {
-      margin-bottom: 30px;
+    textarea {
+      min-height: 100px;
+      resize: vertical;
     }
 
-    .assignment {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      background: white;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .assignment.completed {
-      opacity: 0.55;
-      text-decoration: line-through;
+    .full {
+      grid-column: 1 / -1;
     }
 
     button {
-      background: #6c63ff;
-      color: white;
       border: none;
-      padding: 10px 15px;
       border-radius: 8px;
+      padding: 11px 16px;
       cursor: pointer;
+      font-weight: bold;
+    }
+
+    .primary {
+      background: #6c63a8;
+      color: white;
+    }
+
+    .danger {
+      background: #e57373;
+      color: white;
+    }
+
+    .success {
+      background: #66bb6a;
+      color: white;
+    }
+
+    .assignment {
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .assignment.completed {
+      opacity: .55;
+    }
+
+    .assignment.completed .assignment-title {
+      text-decoration: line-through;
+    }
+
+    .assignment-title {
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .assignment-info {
+      color: #666;
       font-size: 14px;
+      line-height: 1.7;
     }
 
-    button:hover {
-      background: #574fd6;
+    .priority {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 5px;
     }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 10px;
+    .high {
+      background: #ffcdd2;
+      color: #b71c1c;
     }
 
-    .add-assignment {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    .medium {
+      background: #fff3cd;
+      color: #856404;
     }
 
-    footer {
+    .low {
+      background: #d9f2d9;
+      color: #2e7d32;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
       text-align: center;
-      padding: 25px;
+      padding: 30px;
       color: #777;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #6c63a8;
+    }
+
+    .stat-label {
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .class-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .class-item:last-child {
+      border-bottom: none;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .calendar-day {
+      min-height: 100px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 7px;
+      padding: 8px;
+    }
+
+    .calendar-date {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .calendar-assignment {
+      background: #6c63a8;
+      color: white;
+      border-radius: 5px;
+      padding: 4px;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .day-name {
+      text-align: center;
+      font-weight: bold;
+      padding: 8px;
+    }
+
+    @media (max-width: 700px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .assignment {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .calendar-day {
+        min-height: 70px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>📚 My Student Planner</h1>
-    <p>Stay organized. Stay on top of your classes.</p>
-  </header>
+<header>
+  <h1>📚 Student Planner</h1>
+  <p>Stay organized and keep up with your schoolwork!</p>
+</header>
 
-  <div class="container">
+<div class="container">
 
-    <div class="dashboard">
+  <div class="tabs">
+    <button class="tab-button active" onclick="showSection('dashboard', this)">🏠 Dashboard</button>
+    <button class="tab-button" onclick="showSection('assignments', this)">📝 Assignments</button>
+    <button class="tab-button" onclick="showSection('calendar', this)">📅 Calendar</button>
+    <button class="tab-button" onclick="showSection('classes', this)">📚 Classes</button>
+  </div>
 
-      <div class="card">
-        <h2>📅 Today</h2>
-        <p id="today"></p>
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="section active">
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number" id="totalCount">0</div>
+        <div class="stat-label">Total</div>
       </div>
 
-      <div class="card">
-        <h2>📝 Assignments</h2>
-        <p>
-          <strong id="assignmentCount">0</strong>
-          assignments
-        </p>
+      <div class="stat">
+        <div class="stat-number" id="activeCount">0</div>
+        <div class="stat-label">To Do</div>
       </div>
 
-      <div class="card">
-        <h2>🎯 Progress</h2>
-        <p>Keep working toward your goals!</p>
+      <div class="stat">
+        <div class="stat-number" id="completedCount">0</div>
+        <div class="stat-label">Completed</div>
       </div>
 
+      <div class="stat">
+        <div class="stat-number" id="highCount">0</div>
+        <div class="stat-label">High Priority</div>
+      </div>
     </div>
 
-
-    <div class="card schedule">
-
-      <h2>🗓️ Today's Schedule</h2>
-
-      <div class="class">
-        <span>Business Law</span>
-        <span>9:00 AM</span>
-      </div>
-
-      <div class="class">
-        <span>Class 2</span>
-        <span>10:00 AM</span>
-      </div>
-
-      <div class="class">
-        <span>Class 3</span>
-        <span>11:00 AM</span>
-      </div>
-
-    </div>
-
-
-    <div class="add-assignment">
-
-      <h2>➕ Add Assignment</h2>
-
-      <input
-        type="text"
-        id="assignmentInput"
-        placeholder="Assignment name"
-      >
-
-      <input
-        type="text"
-        id="classInput"
-        placeholder="Class"
-      >
-
-      <button onclick="addAssignment()">
-        Add Assignment
-      </button>
-
-    </div>
-
-
-    <div class="assignments">
-
-      <div class="card">
-
-        <h2>📋 My Assignments</h2>
-
-        <div id="assignmentList"></div>
-
-      </div>
-
+    <div class="card">
+      <h2>📌 Upcoming Assignments</h2>
+      <div id="upcomingAssignments"></div>
     </div>
 
   </div>
 
+  <!-- ASSIGNMENTS -->
+  <div id="assignments" class="section">
 
-  <footer>
-    Student Planner © 2026
-  </footer>
+    <div class="card">
+      <h2>➕ Add Assignment</h2>
 
+      <div class="form-grid">
 
-  <script>
+        <div>
+          <label>Assignment Name</label>
+          <input id="assignmentName" type="text" placeholder="Example: Chapter 5 Homework">
+        </div>
 
-    // Show today's date
+        <div>
+          <label>Class</label>
+          <select id="assignmentClass">
+            <option value="">Select a class</option>
+          </select>
+        </div>
 
-    const today = new Date();
+        <div>
+          <label>Due Date</label>
+          <input id="assignmentDate" type="date">
+        </div>
 
-    document.getElementById("today").textContent =
-      today.toLocaleDateString(undefined, {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      });
+        <div>
+          <label>Priority</label>
+          <select id="assignmentPriority">
+            <option value="High">High</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
 
+        <div class="full">
+          <label>Notes</label>
+          <textarea id="assignmentNotes" placeholder="Optional notes..."></textarea>
+        </div>
 
-    // Load saved assignments
+        <div class="full">
+          <button class="primary" onclick="addAssignment()">Add Assignment</button>
+        </div>
 
-    let assignments =
-      JSON.parse(localStorage.getItem("assignments")) || [];
+      </div>
+    </div>
 
+    <div class="card">
+      <h2>📝 My Assignments</h2>
 
-    // Save assignments
+      <div style="margin-bottom:15px;">
+        <select id="filterAssignments" onchange="renderAssignments()">
+          <option value="all">All Assignments</option>
+          <option value="active">To Do</option>
+          <option value="completed">Completed</option>
+          <option value="high">High Priority</option>
+        </select>
+      </div>
 
-    function saveAssignments() {
+      <div id="assignmentList"></div>
+    </div>
 
-      localStorage.setItem(
-        "assignments",
-        JSON.stringify(assignments)
-      );
+  </div>
 
+  <!-- CALENDAR -->
+  <div id="calendar" class="section">
+
+    <div class="card">
+      <h2>📅 Assignment Calendar</h2>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <button class="primary" onclick="previousMonth()">← Previous</button>
+        <h3 id="calendarTitle"></h3>
+        <button class="primary" onclick="nextMonth()">Next →</button>
+      </div>
+
+      <div class="calendar-grid">
+        <div class="day-name">Sun</div>
+        <div class="day-name">Mon</div>
+        <div class="day-name">Tue</div>
+        <div class="day-name">Wed</div>
+        <div class="day-name">Thu</div>
+        <div class="day-name">Fri</div>
+        <div class="day-name">Sat</div>
+      </div>
+
+      <div id="calendarDays" class="calendar-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- CLASSES -->
+  <div id="classes" class="section">
+
+    <div class="card">
+      <h2>📚 My Classes</h2>
+
+      <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <input id="className" type="text" placeholder="Example: Business Law">
+        <button class="primary" onclick="addClass()">Add Class</button>
+      </div>
+
+      <div id="classList"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  let assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+
+  let classes = JSON.parse(localStorage.getItem("classes")) || [
+    "Business Law"
+  ];
+
+  let currentCalendarDate = new Date();
+
+  function saveData() {
+    localStorage.setItem("assignments", JSON.stringify(assignments));
+    localStorage.setItem("classes", JSON.stringify(classes));
+  }
+
+  function showSection(sectionId, button) {
+
+    document.querySelectorAll(".section").forEach(section => {
+      section.classList.remove("active");
+    });
+
+    document.querySelectorAll(".tab-button").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    document.getElementById(sectionId).classList.add("active");
+
+    if (button) {
+      button.classList.add("active");
     }
 
+    if (sectionId === "calendar") {
+      renderCalendar();
+    }
+  }
 
-    // Display assignments
+  function addAssignment() {
 
-    function displayAssignments() {
+    const name = document.getElementById("assignmentName").value.trim();
+    const className = document.getElementById("assignmentClass").value;
+    const date = document.getElementById("assignmentDate").value;
+    const priority = document.getElementById("assignmentPriority").value;
+    const notes = document.getElementById("assignmentNotes").value.trim();
 
-      const list =
-        document.getElementById("assignmentList");
+    if (!name) {
+      alert("Please enter an assignment name.");
+      return;
+    }
 
-      list.innerHTML = "";
+    const assignment = {
+      id: Date.now(),
+      name,
+      className,
+      date,
+      priority,
+      notes,
+      completed: false
+    };
 
-      document.getElementById("assignmentCount").textContent =
-        assignments.length;
+    assignments.push(assignment);
 
+    saveData();
 
-      assignments.forEach((assignment, index) => {
+    document.getElementById("assignmentName").value = "";
+    document.getElementById("assignmentDate").value = "";
+    document.getElementById("assignmentNotes").value = "";
 
-        const div =
-          document.createElement("div");
+    renderAssignments();
+    updateDashboard();
+    renderCalendar();
 
-        div.className = "assignment";
+    alert("Assignment added!");
+  }
 
+  function renderAssignments() {
 
-        if (assignment.completed) {
-          div.classList.add("completed");
-        }
+    const list = document.getElementById("assignmentList");
 
+    const filter = document.getElementById("filterAssignments").value;
 
-        div.innerHTML = `
+    let filtered = [...assignments];
+
+    if (filter === "active") {
+      filtered = filtered.filter(a => !a.completed);
+    }
+
+    if (filter === "completed") {
+      filtered = filtered.filter(a => a.completed);
+    }
+
+    if (filter === "high") {
+      filtered = filtered.filter(a => a.priority === "High");
+    }
+
+    filtered.sort((a, b) => {
+
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+
+      return new Date(a.date) - new Date(b.date);
+
+    });
+
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty">No assignments to show.</div>';
+      return;
+    }
+
+    list.innerHTML = filtered.map(a => {
+
+      const dateText = a.date
+        ? new Date(a.date + "T00:00:00").toLocaleDateString()
+        : "No due date";
+
+      return `
+        <div class="assignment ${a.completed ? "completed" : ""}">
 
           <div>
 
-            <strong>
-              ${assignment.name}
-            </strong>
+            <div class="assignment-title">
+              ${escapeHtml(a.name)}
+            </div>
 
-            <br>
+            <div class="assignment-info">
 
-            <small>
-              ${assignment.className}
-            </small>
+              📚 ${escapeHtml(a.className || "No class")}<br>
+
+              📅 Due: ${dateText}<br>
+
+              ⭐ Priority:
+              <span class="priority ${a.priority.toLowerCase()}">
+                ${a.priority}
+              </span>
+
+              ${a.notes ? `<br>📌 ${escapeHtml(a.notes)}` : ""}
+
+            </div>
 
           </div>
 
+          <div class="actions">
 
-          <button
-            onclick="completeAssignment(${index})"
-          >
+            <button class="success" onclick="toggleComplete(${a.id})">
+              ${a.completed ? "Undo" : "Complete"}
+            </button>
 
-            ${
-              assignment.completed
-                ? "Undo"
-                : "Complete"
-            }
+            <button class="danger" onclick="deleteAssignment(${a.id})">
+              Delete
+            </button>
 
-          </button>
+          </div>
 
-        `;
+        </div>
+      `;
 
+    }).join("");
+  }
 
-        list.appendChild(div);
+  function toggleComplete(id) {
+
+    const assignment = assignments.find(a => a.id === id);
+
+    if (assignment) {
+      assignment.completed = !assignment.completed;
+    }
+
+    saveData();
+
+    renderAssignments();
+    updateDashboard();
+    renderCalendar();
+  }
+
+  function deleteAssignment(id) {
+
+    if (!confirm("Delete this assignment?")) {
+      return;
+    }
+
+    assignments = assignments.filter(a => a.id !== id);
+
+    saveData();
+
+    renderAssignments();
+    updateDashboard();
+    renderCalendar();
+  }
+
+  function updateDashboard() {
+
+    const total = assignments.length;
+
+    const completed = assignments.filter(a => a.completed).length;
+
+    const active = assignments.filter(a => !a.completed).length;
+
+    const high = assignments.filter(
+      a => a.priority === "High" && !a.completed
+    ).length;
+
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("activeCount").textContent = active;
+    document.getElementById("completedCount").textContent = completed;
+    document.getElementById("highCount").textContent = high;
+
+    const upcoming = assignments
+      .filter(a => !a.completed)
+      .sort((a,b) => {
+
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+
+        return new Date(a.date) - new Date(b.date);
+
+      })
+      .slice(0, 5);
+
+    const upcomingContainer =
+      document.getElementById("upcomingAssignments");
+
+    if (upcoming.length === 0) {
+
+      upcomingContainer.innerHTML =
+        '<div class="empty">You have no upcoming assignments! 🎉</div>';
+
+      return;
+    }
+
+    upcomingContainer.innerHTML = upcoming.map(a => {
+
+      const dateText = a.date
+        ? new Date(a.date + "T00:00:00").toLocaleDateString()
+        : "No due date";
+
+      return `
+        <div class="assignment">
+
+          <div>
+
+            <div class="assignment-title">
+              ${escapeHtml(a.name)}
+            </div>
+
+            <div class="assignment-info">
+              📚 ${escapeHtml(a.className || "No class")}<br>
+              📅 ${dateText}
+            </div>
+
+          </div>
+
+          <span class="priority ${a.priority.toLowerCase()}">
+            ${a.priority}
+          </span>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+  function addClass() {
+
+    const input = document.getElementById("className");
+
+    const name = input.value.trim();
+
+    if (!name) {
+      alert("Please enter a class name.");
+      return;
+    }
+
+    if (classes.includes(name)) {
+      alert("That class already exists.");
+      return;
+    }
+
+    classes.push(name);
+
+    saveData();
+
+    input.value = "";
+
+    renderClasses();
+    updateClassDropdown();
+  }
+
+  function deleteClass(name) {
+
+    if (!confirm(`Delete ${name}?`)) {
+      return;
+    }
+
+    classes = classes.filter(c => c !== name);
+
+    saveData();
+
+    renderClasses();
+    updateClassDropdown();
+  }
+
+  function renderClasses() {
+
+    const list = document.getElementById("classList");
+
+    if (classes.length === 0) {
+
+      list.innerHTML =
+        '<div class="empty">No classes added yet.</div>';
+
+      return;
+    }
+
+    list.innerHTML = classes.map(name => `
+
+      <div class="class-item">
+
+        <strong>📚 ${escapeHtml(name)}</strong>
+
+        <button class="danger"
+          onclick="deleteClass('${escapeAttribute(name)}')">
+          Delete
+        </button>
+
+      </div>
+
+    `).join("");
+  }
+
+  function updateClassDropdown() {
+
+    const dropdown =
+      document.getElementById("assignmentClass");
+
+    dropdown.innerHTML =
+      '<option value="">Select a class</option>';
+
+    classes.forEach(name => {
+
+      const option = document.createElement("option");
+
+      option.value = name;
+      option.textContent = name;
+
+      dropdown.appendChild(option);
+
+    });
+  }
+
+  function renderCalendar() {
+
+    const year = currentCalendarDate.getFullYear();
+
+    const month = currentCalendarDate.getMonth();
+
+    const monthName =
+      currentCalendarDate.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric"
+      });
+
+    document.getElementById("calendarTitle").textContent =
+      monthName;
+
+    const container =
+      document.getElementById("calendarDays");
+
+    container.innerHTML = "";
+
+    const firstDay =
+      new Date(year, month, 1).getDay();
+
+    const daysInMonth =
+      new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+
+      const emptyDay = document.createElement("div");
+
+      emptyDay.className = "calendar-day";
+
+      container.appendChild(emptyDay);
+
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+
+      const cell = document.createElement("div");
+
+      cell.className = "calendar-day";
+
+      const dateString =
+        `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+
+      const dayAssignments =
+        assignments.filter(a => a.date === dateString);
+
+      cell.innerHTML =
+        `<div class="calendar-date">${day}</div>`;
+
+      dayAssignments.forEach(a => {
+
+        const item =
+          document.createElement("div");
+
+        item.className = "calendar-assignment";
+
+        item.textContent = a.name;
+
+        cell.appendChild(item);
 
       });
 
-    }
-
-
-    // Add assignment
-
-    function addAssignment() {
-
-      const name =
-        document
-          .getElementById("assignmentInput")
-          .value
-          .trim();
-
-
-      const className =
-        document
-          .getElementById("classInput")
-          .value
-          .trim();
-
-
-      if (!name || !className) {
-
-        alert(
-          "Please enter both an assignment and a class."
-        );
-
-        return;
-
-      }
-
-
-      assignments.push({
-
-        name: name,
-
-        className: className,
-
-        completed: false
-
-      });
-
-
-      saveAssignments();
-
-      displayAssignments();
-
-
-      document.getElementById(
-        "assignmentInput"
-      ).value = "";
-
-
-      document.getElementById(
-        "classInput"
-      ).value = "";
+      container.appendChild(cell);
 
     }
+  }
 
+  function previousMonth() {
 
-    // Complete or undo assignment
+    currentCalendarDate.setMonth(
+      currentCalendarDate.getMonth() - 1
+    );
 
-    function completeAssignment(index) {
+    renderCalendar();
+  }
 
-      assignments[index].completed =
-        !assignments[index].completed;
+  function nextMonth() {
 
+    currentCalendarDate.setMonth(
+      currentCalendarDate.getMonth() + 1
+    );
 
-      saveAssignments();
+    renderCalendar();
+  }
 
-      displayAssignments();
+  function escapeHtml(text) {
 
-    }
+    const div = document.createElement("div");
 
+    div.textContent = text;
 
-    // Start the planner
+    return div.innerHTML;
+  }
 
-    displayAssignments();
+  function escapeAttribute(text) {
 
-  </script>
+    return text
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'");
+  }
+
+  updateClassDropdown();
+  renderClasses();
+  renderAssignments();
+  updateDashboard();
+  renderCalendar();
+
+</script>
 
 </body>
 </html>
