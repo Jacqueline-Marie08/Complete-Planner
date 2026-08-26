@@ -3680,3 +3680,266 @@ displayImportantDates();
 }
 
 </style>
+<!-- ================================
+     STUDENT PLANNER DESIGN UPGRADE
+================================ -->
+
+<style>
+
+/* MAIN PAGE */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6fb;
+  color: #252b35;
+}
+
+/* HEADER */
+
+header {
+  background: white;
+  padding: 25px;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+}
+
+/* SECTIONS */
+
+.planner-section {
+  background: white;
+  margin: 20px auto;
+  padding: 25px;
+  max-width: 1100px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.planner-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 23px;
+}
+
+/* INPUTS */
+
+input,
+select,
+textarea {
+  padding: 11px 13px;
+  border: 1px solid #d5d9e2;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #7b8cff;
+}
+
+/* BUTTONS */
+
+button {
+  border: none;
+  padding: 11px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  background: #6475e8;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* FORMS */
+
+.course-form,
+.schedule-form,
+.todo-form,
+.reminder-form,
+.goal-form,
+.budget-form,
+.important-date-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* DASHBOARD */
+
+.dashboard-card {
+  background: #f7f8fc !important;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+}
+
+/* LIST ITEMS */
+
+.course-item,
+.schedule-item,
+.todo-item,
+.reminder-item,
+.goal-item,
+.expense-item,
+.important-date-item,
+.upcoming-assignment {
+  background: #f8f9fc !important;
+  border: 1px solid #e5e7eb;
+}
+
+/* CALENDAR */
+
+.calendar-day {
+  background: #f8f9fc !important;
+  border: 1px solid #e5e7eb;
+}
+
+.calendar-day:hover {
+  transform: scale(1.02);
+}
+
+/* TEXT AREA */
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+/* PROGRESS */
+
+.progress-bar {
+  background: #e5e7eb !important;
+}
+
+#assignmentProgress {
+  background: #6475e8 !important;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .planner-section {
+    margin: 12px;
+    padding: 18px;
+  }
+
+  .course-form input,
+  .course-form select,
+  .course-form button,
+  .schedule-form input,
+  .schedule-form select,
+  .schedule-form button,
+  .todo-form input,
+  .todo-form button {
+    width: 100%;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+</style>
+
+
+<!-- ================================
+     NAVIGATION
+================================ -->
+
+<nav class="planner-nav">
+
+  <button onclick="scrollToSection('dashboardSection')">
+    🏠 Home
+  </button>
+
+  <button onclick="scrollToSection('classesSection')">
+    📚 Classes
+  </button>
+
+  <button onclick="scrollToSection('assignmentsSection')">
+    📝 Assignments
+  </button>
+
+  <button onclick="scrollToSection('calendarSection')">
+    📆 Calendar
+  </button>
+
+  <button onclick="scrollToSection('todoSection')">
+    ✅ To-Do
+  </button>
+
+  <button onclick="scrollToSection('notesSection')">
+    📝 Notes
+  </button>
+
+</nav>
+
+
+<script>
+
+function scrollToSection(id) {
+
+  const section =
+    document.getElementById(id);
+
+  if (section) {
+
+    section.scrollIntoView({
+      behavior: "smooth"
+    });
+
+  }
+
+}
+
+</script>
+
+
+<style>
+
+.planner-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  padding: 12px 15px;
+
+  background: white;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.planner-nav button {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+</style>
