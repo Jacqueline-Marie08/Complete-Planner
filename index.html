@@ -3982,3 +3982,419 @@ function fixPlannerNavigation() {
 
 fixPlannerNavigation();
 </script>
+<!-- =========================================
+     FINAL NAVIGATION + AESTHETIC UPGRADE
+========================================= -->
+
+<style>
+
+/* ===== TOP NAVIGATION ===== */
+
+.planner-nav {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 10px;
+
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.planner-nav button {
+  background: white;
+  color: #4b4f68;
+
+  border: 1px solid #e4e6ef;
+  border-radius: 14px;
+
+  padding: 15px 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+
+  transition: all 0.2s ease;
+}
+
+.planner-nav button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(0,0,0,0.1);
+}
+
+.planner-nav button.active {
+  background: #7567b5;
+  color: white;
+  border-color: #7567b5;
+}
+
+
+/* ===== PAGE BACKGROUND ===== */
+
+body {
+  background:
+    linear-gradient(
+      135deg,
+      #f6f4fb 0%,
+      #eef2fa 50%,
+      #f8f5fb 100%
+    );
+
+  color: #252b42;
+}
+
+
+/* ===== MAIN SECTIONS ===== */
+
+.planner-section {
+  max-width: 1100px;
+
+  margin: 24px auto;
+  padding: 28px;
+
+  background: rgba(255,255,255,0.95);
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(220,222,235,0.7);
+
+  box-shadow:
+    0 8px 25px rgba(60,60,90,0.08);
+
+  transition: transform 0.2s ease;
+}
+
+.planner-section:hover {
+  transform: translateY(-1px);
+}
+
+.planner-section h2 {
+  color: #292d45;
+  font-size: 25px;
+}
+
+
+/* ===== INPUTS ===== */
+
+input,
+select,
+textarea {
+  background: #fafbfe;
+
+  border: 1px solid #d9dce8;
+
+  border-radius: 11px;
+
+  padding: 12px 14px;
+
+  color: #33384f;
+
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #8376c3;
+
+  box-shadow:
+    0 0 0 3px rgba(131,118,195,0.12);
+}
+
+
+/* ===== BUTTONS ===== */
+
+button {
+  background: #7567b5;
+  color: white;
+
+  border-radius: 10px;
+
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #6557a3;
+  transform: translateY(-1px);
+}
+
+
+/* ===== DASHBOARD CARDS ===== */
+
+.dashboard-card {
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f7f6fc
+    ) !important;
+
+  border: 1px solid #e5e3ef !important;
+
+  border-radius: 18px !important;
+
+  box-shadow:
+    0 5px 15px rgba(70,65,100,0.07);
+
+  padding: 22px !important;
+}
+
+.dashboard-card h3 {
+  color: #555a75;
+}
+
+.dashboard-card p {
+  color: #7567b5;
+}
+
+
+/* ===== LIST ITEMS ===== */
+
+.course-item,
+.schedule-item,
+.todo-item,
+.reminder-item,
+.goal-item,
+.expense-item,
+.important-date-item,
+.upcoming-assignment {
+
+  background: #fafbfe !important;
+
+  border: 1px solid #e5e6ee !important;
+
+  border-radius: 12px !important;
+
+  padding: 14px !important;
+
+  margin: 9px 0 !important;
+}
+
+
+/* ===== CALENDAR ===== */
+
+.calendar-day {
+  background: #fafbfe !important;
+
+  border: 1px solid #e4e5ed !important;
+
+  border-radius: 10px;
+
+  transition: all 0.15s ease;
+}
+
+.calendar-day:hover {
+  background: #f1effa !important;
+}
+
+
+/* ===== PROGRESS BAR ===== */
+
+.progress-bar {
+  background: #e7e6ee !important;
+
+  border-radius: 20px !important;
+
+  height: 18px !important;
+}
+
+#assignmentProgress {
+  background:
+    linear-gradient(
+      90deg,
+      #7567b5,
+      #9b8bd1
+    ) !important;
+
+  border-radius: 20px;
+}
+
+
+/* ===== SECTION HEADINGS ===== */
+
+.planner-section h2::after {
+  content: "";
+
+  display: block;
+
+  width: 45px;
+  height: 3px;
+
+  margin-top: 8px;
+
+  border-radius: 10px;
+
+  background: #8b7bc4;
+}
+
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 750px) {
+
+  .planner-nav {
+    grid-template-columns: repeat(3, 1fr);
+
+    margin: 10px;
+  }
+
+  .planner-nav button {
+    font-size: 12px;
+    padding: 11px 5px;
+  }
+
+  .planner-section {
+    margin: 14px;
+    padding: 20px;
+  }
+
+}
+
+</style>
+
+
+<script>
+
+/* =========================================
+   FIX + LABEL NAVIGATION
+========================================= */
+
+function setupPlannerNavigation() {
+
+  const nav =
+    document.querySelector(".planner-nav");
+
+  if (!nav) return;
+
+  const buttons =
+    nav.querySelectorAll("button");
+
+  /*
+     Find sections by their heading text.
+     This makes the navigation work even
+     if the sections don't have IDs.
+  */
+
+  const sections =
+    Array.from(
+      document.querySelectorAll(".planner-section")
+    );
+
+
+  function findSection(words) {
+
+    return sections.find(section => {
+
+      const heading =
+        section.querySelector("h2");
+
+      if (!heading) return false;
+
+      const text =
+        heading.textContent.toLowerCase();
+
+      return words.some(word =>
+        text.includes(word)
+      );
+
+    });
+
+  }
+
+
+  const navigation = [
+
+    {
+      label: "🏠 Dashboard",
+      words: ["dashboard", "student dashboard"]
+    },
+
+    {
+      label: "📚 Classes",
+      words: ["my classes"]
+    },
+
+    {
+      label: "📝 Assignments",
+      words: [
+        "assignments",
+        "upcoming assignments"
+      ]
+    },
+
+    {
+      label: "📅 Calendar",
+      words: ["calendar"]
+    },
+
+    {
+      label: "✅ To-Do",
+      words: ["to-do", "to do"]
+    },
+
+    {
+      label: "🗒️ Notes",
+      words: ["notes"]
+    }
+
+  ];
+
+
+  navigation.forEach((item, index) => {
+
+    if (!buttons[index]) return;
+
+    buttons[index].textContent =
+      item.label;
+
+    const section =
+      findSection(item.words);
+
+    if (!section) return;
+
+    section.id =
+      "planner-section-" + index;
+
+    buttons[index].onclick = function() {
+
+      buttons.forEach(button =>
+        button.classList.remove("active")
+      );
+
+      this.classList.add("active");
+
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    };
+
+  });
+
+
+  if (buttons[0]) {
+    buttons[0].classList.add("active");
+  }
+
+}
+
+
+setupPlannerNavigation();
+
+
+/* Run again after page finishes loading */
+
+window.addEventListener(
+  "load",
+  setupPlannerNavigation
+);
+
+</script>
