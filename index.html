@@ -3943,980 +3943,8 @@ function scrollToSection(id) {
 }
 
 </style>
-<!-- FIX NAVIGATION -->
 
-<script>
-function fixPlannerNavigation() {
 
-  const sections = document.querySelectorAll(".planner-section");
-
-  if (sections.length >= 1) {
-    sections[0].id = "dashboardSection";
-  }
-
-  if (sections.length >= 2) {
-    sections[1].id = "classesSection";
-  }
-
-  if (sections.length >= 3) {
-    sections[2].id = "assignmentsSection";
-  }
-
-  if (sections.length >= 4) {
-    sections[3].id = "scheduleSection";
-  }
-
-  if (sections.length >= 5) {
-    sections[4].id = "notesSection";
-  }
-
-  if (sections.length >= 6) {
-    sections[5].id = "todoSection";
-  }
-
-  if (sections.length >= 7) {
-    sections[6].id = "calendarSection";
-  }
-
-}
-
-fixPlannerNavigation();
-</script>
-<!-- =========================================
-     FINAL NAVIGATION + AESTHETIC UPGRADE
-========================================= -->
-
-<style>
-
-/* ===== TOP NAVIGATION ===== */
-
-.planner-nav {
-  max-width: 1100px;
-  margin: 20px auto;
-  padding: 10px;
-
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.planner-nav button {
-  background: white;
-  color: #4b4f68;
-
-  border: 1px solid #e4e6ef;
-  border-radius: 14px;
-
-  padding: 15px 10px;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-
-  transition: all 0.2s ease;
-}
-
-.planner-nav button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 18px rgba(0,0,0,0.1);
-}
-
-.planner-nav button.active {
-  background: #7567b5;
-  color: white;
-  border-color: #7567b5;
-}
-
-
-/* ===== PAGE BACKGROUND ===== */
-
-body {
-  background:
-    linear-gradient(
-      135deg,
-      #f6f4fb 0%,
-      #eef2fa 50%,
-      #f8f5fb 100%
-    );
-
-  color: #252b42;
-}
-
-
-/* ===== MAIN SECTIONS ===== */
-
-.planner-section {
-  max-width: 1100px;
-
-  margin: 24px auto;
-  padding: 28px;
-
-  background: rgba(255,255,255,0.95);
-
-  border-radius: 20px;
-
-  border: 1px solid rgba(220,222,235,0.7);
-
-  box-shadow:
-    0 8px 25px rgba(60,60,90,0.08);
-
-  transition: transform 0.2s ease;
-}
-
-.planner-section:hover {
-  transform: translateY(-1px);
-}
-
-.planner-section h2 {
-  color: #292d45;
-  font-size: 25px;
-}
-
-
-/* ===== INPUTS ===== */
-
-input,
-select,
-textarea {
-  background: #fafbfe;
-
-  border: 1px solid #d9dce8;
-
-  border-radius: 11px;
-
-  padding: 12px 14px;
-
-  color: #33384f;
-
-  transition: all 0.2s ease;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: #8376c3;
-
-  box-shadow:
-    0 0 0 3px rgba(131,118,195,0.12);
-}
-
-
-/* ===== BUTTONS ===== */
-
-button {
-  background: #7567b5;
-  color: white;
-
-  border-radius: 10px;
-
-  transition: all 0.2s ease;
-}
-
-button:hover {
-  background: #6557a3;
-  transform: translateY(-1px);
-}
-
-
-/* ===== DASHBOARD CARDS ===== */
-
-.dashboard-card {
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff,
-      #f7f6fc
-    ) !important;
-
-  border: 1px solid #e5e3ef !important;
-
-  border-radius: 18px !important;
-
-  box-shadow:
-    0 5px 15px rgba(70,65,100,0.07);
-
-  padding: 22px !important;
-}
-
-.dashboard-card h3 {
-  color: #555a75;
-}
-
-.dashboard-card p {
-  color: #7567b5;
-}
-
-
-/* ===== LIST ITEMS ===== */
-
-.course-item,
-.schedule-item,
-.todo-item,
-.reminder-item,
-.goal-item,
-.expense-item,
-.important-date-item,
-.upcoming-assignment {
-
-  background: #fafbfe !important;
-
-  border: 1px solid #e5e6ee !important;
-
-  border-radius: 12px !important;
-
-  padding: 14px !important;
-
-  margin: 9px 0 !important;
-}
-
-
-/* ===== CALENDAR ===== */
-
-.calendar-day {
-  background: #fafbfe !important;
-
-  border: 1px solid #e4e5ed !important;
-
-  border-radius: 10px;
-
-  transition: all 0.15s ease;
-}
-
-.calendar-day:hover {
-  background: #f1effa !important;
-}
-
-
-/* ===== PROGRESS BAR ===== */
-
-.progress-bar {
-  background: #e7e6ee !important;
-
-  border-radius: 20px !important;
-
-  height: 18px !important;
-}
-
-#assignmentProgress {
-  background:
-    linear-gradient(
-      90deg,
-      #7567b5,
-      #9b8bd1
-    ) !important;
-
-  border-radius: 20px;
-}
-
-
-/* ===== SECTION HEADINGS ===== */
-
-.planner-section h2::after {
-  content: "";
-
-  display: block;
-
-  width: 45px;
-  height: 3px;
-
-  margin-top: 8px;
-
-  border-radius: 10px;
-
-  background: #8b7bc4;
-}
-
-
-/* ===== MOBILE ===== */
-
-@media (max-width: 750px) {
-
-  .planner-nav {
-    grid-template-columns: repeat(3, 1fr);
-
-    margin: 10px;
-  }
-
-  .planner-nav button {
-    font-size: 12px;
-    padding: 11px 5px;
-  }
-
-  .planner-section {
-    margin: 14px;
-    padding: 20px;
-  }
-
-}
-
-</style>
-
-
-<script>
-
-/* =========================================
-   FIX + LABEL NAVIGATION
-========================================= */
-
-function setupPlannerNavigation() {
-
-  const nav =
-    document.querySelector(".planner-nav");
-
-  if (!nav) return;
-
-  const buttons =
-    nav.querySelectorAll("button");
-
-  /*
-     Find sections by their heading text.
-     This makes the navigation work even
-     if the sections don't have IDs.
-  */
-
-  const sections =
-    Array.from(
-      document.querySelectorAll(".planner-section")
-    );
-
-
-  function findSection(words) {
-
-    return sections.find(section => {
-
-      const heading =
-        section.querySelector("h2");
-
-      if (!heading) return false;
-
-      const text =
-        heading.textContent.toLowerCase();
-
-      return words.some(word =>
-        text.includes(word)
-      );
-
-    });
-
-  }
-
-
-  const navigation = [
-
-    {
-      label: "🏠 Dashboard",
-      words: ["dashboard", "student dashboard"]
-    },
-
-    {
-      label: "📚 Classes",
-      words: ["my classes"]
-    },
-
-    {
-      label: "📝 Assignments",
-      words: [
-        "assignments",
-        "upcoming assignments"
-      ]
-    },
-
-    {
-      label: "📅 Calendar",
-      words: ["calendar"]
-    },
-
-    {
-      label: "✅ To-Do",
-      words: ["to-do", "to do"]
-    },
-
-    {
-      label: "🗒️ Notes",
-      words: ["notes"]
-    }
-
-  ];
-
-
-  navigation.forEach((item, index) => {
-
-    if (!buttons[index]) return;
-
-    buttons[index].textContent =
-      item.label;
-
-    const section =
-      findSection(item.words);
-
-    if (!section) return;
-
-    section.id =
-      "planner-section-" + index;
-
-    buttons[index].onclick = function() {
-
-      buttons.forEach(button =>
-        button.classList.remove("active")
-      );
-
-      this.classList.add("active");
-
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-    };
-
-  });
-
-
-  if (buttons[0]) {
-    buttons[0].classList.add("active");
-  }
-
-}
-
-
-setupPlannerNavigation();
-
-
-/* Run again after page finishes loading */
-
-window.addEventListener(
-  "load",
-  setupPlannerNavigation
-);
-
-</script>
-<!-- =========================================
-     WORKING NAVIGATION FIX
-========================================= -->
-
-<script>
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const nav = document.querySelector(".planner-nav");
-
-  if (!nav) return;
-
-  const buttons = nav.querySelectorAll("button");
-
-  /* Find a section by the words in its heading */
-
-  function findSection(searchWords) {
-
-    const sections =
-      document.querySelectorAll(".planner-section");
-
-    for (const section of sections) {
-
-      const heading =
-        section.querySelector("h1, h2, h3");
-
-      if (!heading) continue;
-
-      const headingText =
-        heading.textContent.toLowerCase().trim();
-
-      for (const word of searchWords) {
-
-        if (headingText.includes(word)) {
-          return section;
-        }
-
-      }
-
-    }
-
-    return null;
-  }
-
-
-  /* DASHBOARD */
-
-  if (buttons[0]) {
-
-    buttons[0].onclick = function (event) {
-
-      event.preventDefault();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    };
-
-  }
-
-
-  /* CLASSES */
-
-  if (buttons[1]) {
-
-    buttons[1].onclick = function (event) {
-
-      event.preventDefault();
-
-      const section =
-        findSection(["my classes", "classes"]);
-
-      if (section) {
-
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-      }
-
-    };
-
-  }
-
-
-  /* ASSIGNMENTS */
-
-  if (buttons[2]) {
-
-    buttons[2].onclick = function (event) {
-
-      event.preventDefault();
-
-      const section =
-        findSection([
-          "assignments",
-          "upcoming assignments"
-        ]);
-
-      if (section) {
-
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-      }
-
-    };
-
-  }
-
-
-  /* CALENDAR */
-
-  if (buttons[3]) {
-
-    buttons[3].onclick = function (event) {
-
-      event.preventDefault();
-
-      const section =
-        findSection(["calendar"]);
-
-      if (section) {
-
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-      }
-
-    };
-
-  }
-
-
-  /* TO-DO */
-
-  if (buttons[4]) {
-
-    buttons[4].onclick = function (event) {
-
-      event.preventDefault();
-
-      const section =
-        findSection([
-          "to-do",
-          "to do",
-          "todo"
-        ]);
-
-      if (section) {
-
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-      }
-
-    };
-
-  }
-
-
-  /* NOTES */
-
-  if (buttons[5]) {
-
-    buttons[5].onclick = function (event) {
-
-      event.preventDefault();
-
-      const section =
-        findSection(["notes"]);
-
-      if (section) {
-
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
-      }
-
-    };
-
-  }
-
-});
-    });
-    /* ===== MAIN NAVIGATION FIX ===== */
-
-const navTargets = {
-  "dashboard": ["dashboard", "home"],
-  "assignments": ["assignments", "assignment"],
-  "grades": ["grades", "grade"],
-  "tests": ["tests", "test", "exams"],
-  "lectures": ["lectures", "lecture", "syllabus"],
-  "syllabus": ["syllabus", "lectures"],
-  "notes": ["notes", "note"]
-};
-
-function goToPlannerSection(sectionNames) {
-  let section = null;
-
-  for (const name of sectionNames) {
-    section = findSection([name]);
-    if (section) break;
-
-    section = document.getElementById(name);
-    if (section) break;
-
-    section = document.querySelector(
-      `[data-section="${name}"], [id="${name}"], .${name}-section`
-    );
-
-    if (section) break;
-  }
-
-  if (section) {
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
-}
-
-/* Make the top navigation buttons work */
-document.querySelectorAll("button, a").forEach((element) => {
-  const text = element.textContent.trim().toLowerCase();
-
-  if (text.includes("dashboard")) {
-    element.addEventListener("click", (event) => {
-      event.preventDefault();
-      goToPlannerSection(navTargets.dashboard);
-    });
-  }
-
-  else if (text.includes("assignment")) {
-    element.addEventListener("click", (event) => {
-      event.preventDefault();
-      goToPlannerSection(navTargets.assignments);
-    });
-  }
-
-  else if (text.includes("grade")) {
-    element.addEventListener("click", (event) => {
-      event.preventDefault();
-      goToPlannerSection(navTargets.grades);
-    });
-  }
-
-  else if (
-    text.includes("test") ||
-    text.includes("exam")
-  ) {
-    element.addEventListener("click", (event) => {
-      event.preventDefault();
-      goToPlannerSection(navTargets.tests);
-    });
-  }
-
-  else if (
-    text.includes("lecture") ||
-    text.includes("syllabus")
-  ) {
-    element.addEventListener("click", (event) => {
-      event.preventDefault();
-      goToPlannerSection(navTargets.lectures);
-    });
-  }
-
-  else if (text.includes("note")) {
-    element.addEventListener("click", (event) => {
-      event.preventDefault();
-      goToPlannerSection(navTargets.notes);
-    });
-  }
-});
-
-/* ===== END MAIN NAVIGATION FIX ===== */
-  </script>
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  // Make the top navigation buttons work
-  const topButtons = document.querySelectorAll("nav button, header button");
-
-  topButtons.forEach(button => {
-    const text = button.textContent.trim().toLowerCase();
-
-    button.addEventListener("click", function () {
-      let target = "";
-
-      if (text.includes("dashboard")) target = "dashboard";
-      else if (text.includes("assignment")) target = "assignments";
-      else if (text.includes("grade")) target = "grades";
-      else if (text.includes("test")) target = "tests";
-      else if (text.includes("lecture") || text.includes("syllabus")) target = "lectures";
-      else if (text.includes("calendar")) target = "calendar";
-
-      if (target) {
-        // Try the existing showSection function
-        if (typeof showSection === "function") {
-          showSection(target);
-        } else {
-          // Fallback: show the matching section directly
-          document.querySelectorAll(".section").forEach(section => {
-            section.style.display = "none";
-          });
-
-          const section = document.getElementById(target);
-          if (section) {
-            section.style.display = "block";
-          }
-        }
-
-        // Make the clicked button look selected
-        topButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-      }
-    });
-  });
-});
-</script>
-<!-- FINAL STUDENT PLANNER FEATURES -->
-<style>
-.planner-extra {
-  display: none;
-}
-
-.planner-extra.active {
-  display: block;
-}
-
-.extra-card {
-  background: white;
-  border-radius: 16px;
-  padding: 22px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.06);
-}
-
-.extra-card h2 {
-  margin-top: 0;
-}
-
-.extra-input {
-  width: 100%;
-  padding: 12px;
-  margin: 7px 0;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 15px;
-}
-
-.extra-button {
-  border: none;
-  border-radius: 10px;
-  padding: 11px 18px;
-  cursor: pointer;
-  background: #263238;
-  color: white;
-  margin-top: 8px;
-}
-
-.extra-list {
-  margin-top: 15px;
-}
-
-.extra-item {
-  padding: 13px;
-  margin: 8px 0;
-  background: #f5f6fa;
-  border-radius: 10px;
-}
-</style>
-
-<script>
-/* Student Planner - extra features */
-
-function plannerSave(key, value) {
-  localStorage.setItem("studentPlanner_" + key, JSON.stringify(value));
-}
-
-function plannerLoad(key) {
-  const saved = localStorage.getItem("studentPlanner_" + key);
-  return saved ? JSON.parse(saved) : [];
-}
-
-/* TESTS */
-function addTest() {
-  const name = document.getElementById("testName").value;
-  const date = document.getElementById("testDate").value;
-  const className = document.getElementById("testClass").value;
-
-  if (!name || !date) {
-    alert("Please enter a test name and date.");
-    return;
-  }
-
-  const tests = plannerLoad("tests");
-
-  tests.push({
-    name: name,
-    date: date,
-    className: className
-  });
-
-  plannerSave("tests", tests);
-
-  document.getElementById("testName").value = "";
-  document.getElementById("testDate").value = "";
-  document.getElementById("testClass").value = "";
-
-  displayTests();
-}
-
-function displayTests() {
-  const list = document.getElementById("testList");
-  if (!list) return;
-
-  const tests = plannerLoad("tests");
-
-  list.innerHTML = "";
-
-  if (tests.length === 0) {
-    list.innerHTML = "<p>No tests added yet.</p>";
-    return;
-  }
-
-  tests.forEach((test, index) => {
-    list.innerHTML += `
-      <div class="extra-item">
-        <strong>${test.name}</strong><br>
-        ${test.className || "Class not specified"}<br>
-        📅 ${test.date}
-        <br>
-        <button class="extra-button" onclick="deleteTest(${index})">
-          Delete
-        </button>
-      </div>
-    `;
-  });
-}
-
-function deleteTest(index) {
-  const tests = plannerLoad("tests");
-  tests.splice(index, 1);
-  plannerSave("tests", tests);
-  displayTests();
-}
-
-
-/* LECTURES / SYLLABI */
-function addLecture() {
-  const title = document.getElementById("lectureTitle").value;
-  const className = document.getElementById("lectureClass").value;
-  const notes = document.getElementById("lectureNotes").value;
-
-  if (!title) {
-    alert("Please enter a lecture or syllabus title.");
-    return;
-  }
-
-  const lectures = plannerLoad("lectures");
-
-  lectures.push({
-    title: title,
-    className: className,
-    notes: notes
-  });
-
-  plannerSave("lectures", lectures);
-
-  document.getElementById("lectureTitle").value = "";
-  document.getElementById("lectureClass").value = "";
-  document.getElementById("lectureNotes").value = "";
-
-  displayLectures();
-}
-
-function displayLectures() {
-  const list = document.getElementById("lectureList");
-  if (!list) return;
-
-  const lectures = plannerLoad("lectures");
-
-  list.innerHTML = "";
-
-  if (lectures.length === 0) {
-    list.innerHTML = "<p>No lectures or syllabi added yet.</p>";
-    return;
-  }
-
-  lectures.forEach((lecture, index) => {
-    list.innerHTML += `
-      <div class="extra-item">
-        <strong>${lecture.title}</strong><br>
-        ${lecture.className || "Class not specified"}<br>
-        ${lecture.notes || ""}
-        <br>
-        <button class="extra-button" onclick="deleteLecture(${index})">
-          Delete
-        </button>
-      </div>
-    `;
-  });
-}
-
-function deleteLecture(index) {
-  const lectures = plannerLoad("lectures");
-  lectures.splice(index, 1);
   plannerSave("lectures", lectures);
   displayLectures();
 }
@@ -5199,6 +4227,98 @@ document.addEventListener("DOMContentLoaded", function() {
   displayLectures();
   displayCalendar();
   displayTodos();
+
+});
+</script>
+<!-- =========================================
+     FINAL STUDENT PLANNER NAVIGATION
+========================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const navButtons = document.querySelectorAll(".planner-nav button");
+
+  if (!navButtons.length) return;
+
+  function findSection(words) {
+
+    const sections = document.querySelectorAll(".planner-section");
+
+    for (const section of sections) {
+
+      const heading = section.querySelector("h1, h2, h3");
+
+      if (!heading) continue;
+
+      const text = heading.textContent.toLowerCase();
+
+      for (const word of words) {
+        if (text.includes(word)) {
+          return section;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function goTo(words) {
+
+    const section = findSection(words);
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  }
+
+  /* HOME / DASHBOARD */
+  if (navButtons[0]) {
+    navButtons[0].onclick = function () {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    };
+  }
+
+  /* CLASSES */
+  if (navButtons[1]) {
+    navButtons[1].onclick = function () {
+      goTo(["my classes"]);
+    };
+  }
+
+  /* ASSIGNMENTS */
+  if (navButtons[2]) {
+    navButtons[2].onclick = function () {
+      goTo(["assignments"]);
+    };
+  }
+
+  /* CALENDAR */
+  if (navButtons[3]) {
+    navButtons[3].onclick = function () {
+      goTo(["calendar"]);
+    };
+  }
+
+  /* TO-DO */
+  if (navButtons[4]) {
+    navButtons[4].onclick = function () {
+      goTo(["to-do", "to do"]);
+    };
+  }
+
+  /* NOTES */
+  if (navButtons[5]) {
+    navButtons[5].onclick = function () {
+      goTo(["notes"]);
+    };
+  }
 
 });
 </script>
