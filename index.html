@@ -2901,3 +2901,782 @@ updateDashboard();
 }
 
 </style>
+<!-- CALENDAR, REMINDERS, GOALS, BUDGET & IMPORTANT DATES -->
+
+<section class="planner-section">
+  <h2>📆 Calendar</h2>
+
+  <div class="calendar-controls">
+    <button onclick="changeMonth(-1)">← Previous</button>
+    <h3 id="calendarMonth"></h3>
+    <button onclick="changeMonth(1)">Next →</button>
+  </div>
+
+  <div class="calendar-weekdays">
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
+
+  <div id="calendarGrid" class="calendar-grid"></div>
+</section>
+
+
+<section class="planner-section">
+  <h2>🔔 Reminders</h2>
+
+  <div class="reminder-form">
+
+    <input
+      type="text"
+      id="reminderText"
+      placeholder="Reminder"
+    >
+
+    <input
+      type="date"
+      id="reminderDate"
+    >
+
+    <button onclick="addReminder()">
+      Add Reminder
+    </button>
+
+  </div>
+
+  <div id="reminderList"></div>
+</section>
+
+
+<section class="planner-section">
+  <h2>🎓 Semester Goals</h2>
+
+  <div class="goal-form">
+
+    <input
+      type="text"
+      id="goalInput"
+      placeholder="Example: Get an A in Business Law"
+    >
+
+    <button onclick="addGoal()">
+      Add Goal
+    </button>
+
+  </div>
+
+  <div id="goalList"></div>
+</section>
+
+
+<section class="planner-section">
+  <h2>💰 Budget Tracker</h2>
+
+  <div class="budget-form">
+
+    <input
+      type="text"
+      id="expenseName"
+      placeholder="Expense name"
+    >
+
+    <input
+      type="number"
+      id="expenseAmount"
+      placeholder="Amount"
+      min="0"
+      step="0.01"
+    >
+
+    <button onclick="addExpense()">
+      Add Expense
+    </button>
+
+  </div>
+
+  <div class="budget-total">
+    <strong>Total Spent:</strong>
+    $<span id="totalSpent">0.00</span>
+  </div>
+
+  <div id="expenseList"></div>
+</section>
+
+
+<section class="planner-section">
+  <h2>📌 Important Dates</h2>
+
+  <div class="important-date-form">
+
+    <input
+      type="text"
+      id="importantDateName"
+      placeholder="Event name"
+    >
+
+    <input
+      type="date"
+      id="importantDate"
+    >
+
+    <button onclick="addImportantDate()">
+      Add Date
+    </button>
+
+  </div>
+
+  <div id="importantDateList"></div>
+</section>
+
+
+<script>
+
+/* =========================
+   CALENDAR
+========================= */
+
+let calendarDate = new Date();
+
+function displayCalendar() {
+
+  const year = calendarDate.getFullYear();
+  const month = calendarDate.getMonth();
+
+  const monthName =
+    calendarDate.toLocaleString("default", {
+      month: "long"
+    });
+
+  document.getElementById("calendarMonth").textContent =
+    monthName + " " + year;
+
+  const grid =
+    document.getElementById("calendarGrid");
+
+  grid.innerHTML = "";
+
+  const firstDay =
+    new Date(year, month, 1).getDay();
+
+  const daysInMonth =
+    new Date(year, month + 1, 0).getDate();
+
+
+  for (let i = 0; i < firstDay; i++) {
+
+    const empty =
+      document.createElement("div");
+
+    empty.className = "calendar-day empty";
+
+    grid.appendChild(empty);
+  }
+
+
+  for (let day = 1; day <= daysInMonth; day++) {
+
+    const cell =
+      document.createElement("div");
+
+    cell.className = "calendar-day";
+
+    const dateString =
+      `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    cell.innerHTML = `
+      <strong>${day}</strong>
+    `;
+
+
+    const reminders =
+      remindersData.filter(
+        reminder => reminder.date === dateString
+      );
+
+    reminders.forEach(reminder => {
+
+      const reminderDiv =
+        document.createElement("div");
+
+      reminderDiv.className =
+        "calendar-reminder";
+
+      reminderDiv.textContent =
+        reminder.text;
+
+      cell.appendChild(reminderDiv);
+    });
+
+
+    grid.appendChild(cell);
+  }
+}
+
+
+function changeMonth(amount) {
+
+  calendarDate.setMonth(
+    calendarDate.getMonth() + amount
+  );
+
+  displayCalendar();
+}
+
+
+/* =========================
+   REMINDERS
+========================= */
+
+let remindersData =
+  JSON.parse(
+    localStorage.getItem("studentReminders")
+  ) || [];
+
+
+function addReminder() {
+
+  const text =
+    document.getElementById("reminderText")
+      .value.trim();
+
+  const date =
+    document.getElementById("reminderDate")
+      .value;
+
+
+  if (!text || !date) {
+
+    alert(
+      "Please enter a reminder and date."
+    );
+
+    return;
+  }
+
+
+  remindersData.push({
+    text,
+    date
+  });
+
+
+  localStorage.setItem(
+    "studentReminders",
+    JSON.stringify(remindersData)
+  );
+
+
+  document.getElementById("reminderText").value = "";
+  document.getElementById("reminderDate").value = "";
+
+  displayReminders();
+  displayCalendar();
+}
+
+
+function displayReminders() {
+
+  const list =
+    document.getElementById("reminderList");
+
+  list.innerHTML = "";
+
+
+  remindersData.forEach(
+    (reminder, index) => {
+
+      const div =
+        document.createElement("div");
+
+      div.className = "reminder-item";
+
+      div.innerHTML = `
+        <strong>${reminder.text}</strong>
+        <span>${reminder.date}</span>
+        <button onclick="deleteReminder(${index})">
+          Delete
+        </button>
+      `;
+
+      list.appendChild(div);
+    }
+  );
+}
+
+
+function deleteReminder(index) {
+
+  remindersData.splice(index, 1);
+
+  localStorage.setItem(
+    "studentReminders",
+    JSON.stringify(remindersData)
+  );
+
+  displayReminders();
+  displayCalendar();
+}
+
+
+/* =========================
+   GOALS
+========================= */
+
+let goals =
+  JSON.parse(
+    localStorage.getItem("semesterGoals")
+  ) || [];
+
+
+function addGoal() {
+
+  const input =
+    document.getElementById("goalInput");
+
+  const text =
+    input.value.trim();
+
+
+  if (!text) {
+
+    alert("Please enter a goal.");
+
+    return;
+  }
+
+
+  goals.push({
+    text,
+    completed: false
+  });
+
+
+  localStorage.setItem(
+    "semesterGoals",
+    JSON.stringify(goals)
+  );
+
+
+  input.value = "";
+
+  displayGoals();
+}
+
+
+function displayGoals() {
+
+  const list =
+    document.getElementById("goalList");
+
+  list.innerHTML = "";
+
+
+  goals.forEach(
+    (goal, index) => {
+
+      const div =
+        document.createElement("div");
+
+      div.className = "goal-item";
+
+      div.innerHTML = `
+        <input
+          type="checkbox"
+          ${goal.completed ? "checked" : ""}
+          onchange="toggleGoal(${index})"
+        >
+
+        <span>
+          ${goal.text}
+        </span>
+
+        <button onclick="deleteGoal(${index})">
+          Delete
+        </button>
+      `;
+
+      list.appendChild(div);
+    }
+  );
+}
+
+
+function toggleGoal(index) {
+
+  goals[index].completed =
+    !goals[index].completed;
+
+  localStorage.setItem(
+    "semesterGoals",
+    JSON.stringify(goals)
+  );
+
+  displayGoals();
+}
+
+
+function deleteGoal(index) {
+
+  goals.splice(index, 1);
+
+  localStorage.setItem(
+    "semesterGoals",
+    JSON.stringify(goals)
+  );
+
+  displayGoals();
+}
+
+
+/* =========================
+   BUDGET
+========================= */
+
+let expenses =
+  JSON.parse(
+    localStorage.getItem("studentExpenses")
+  ) || [];
+
+
+function addExpense() {
+
+  const name =
+    document.getElementById("expenseName")
+      .value.trim();
+
+  const amount =
+    Number(
+      document.getElementById("expenseAmount")
+        .value
+    );
+
+
+  if (!name || !amount || amount <= 0) {
+
+    alert(
+      "Please enter an expense and amount."
+    );
+
+    return;
+  }
+
+
+  expenses.push({
+    name,
+    amount
+  });
+
+
+  localStorage.setItem(
+    "studentExpenses",
+    JSON.stringify(expenses)
+  );
+
+
+  document.getElementById("expenseName").value = "";
+  document.getElementById("expenseAmount").value = "";
+
+  displayExpenses();
+}
+
+
+function displayExpenses() {
+
+  const list =
+    document.getElementById("expenseList");
+
+  list.innerHTML = "";
+
+  let total = 0;
+
+
+  expenses.forEach(
+    (expense, index) => {
+
+      total += Number(expense.amount);
+
+      const div =
+        document.createElement("div");
+
+      div.className = "expense-item";
+
+      div.innerHTML = `
+        <span>
+          ${expense.name}
+        </span>
+
+        <strong>
+          $${Number(expense.amount).toFixed(2)}
+        </strong>
+
+        <button onclick="deleteExpense(${index})">
+          Delete
+        </button>
+      `;
+
+      list.appendChild(div);
+    }
+  );
+
+
+  document.getElementById("totalSpent")
+    .textContent =
+      total.toFixed(2);
+}
+
+
+function deleteExpense(index) {
+
+  expenses.splice(index, 1);
+
+  localStorage.setItem(
+    "studentExpenses",
+    JSON.stringify(expenses)
+  );
+
+  displayExpenses();
+}
+
+
+/* =========================
+   IMPORTANT DATES
+========================= */
+
+let importantDates =
+  JSON.parse(
+    localStorage.getItem("importantDates")
+  ) || [];
+
+
+function addImportantDate() {
+
+  const name =
+    document.getElementById(
+      "importantDateName"
+    ).value.trim();
+
+  const date =
+    document.getElementById(
+      "importantDate"
+    ).value;
+
+
+  if (!name || !date) {
+
+    alert(
+      "Please enter an event name and date."
+    );
+
+    return;
+  }
+
+
+  importantDates.push({
+    name,
+    date
+  });
+
+
+  localStorage.setItem(
+    "importantDates",
+    JSON.stringify(importantDates)
+  );
+
+
+  document.getElementById(
+    "importantDateName"
+  ).value = "";
+
+  document.getElementById(
+    "importantDate"
+  ).value = "";
+
+  displayImportantDates();
+}
+
+
+function displayImportantDates() {
+
+  const list =
+    document.getElementById(
+      "importantDateList"
+    );
+
+  list.innerHTML = "";
+
+
+  importantDates
+    .sort(
+      (a, b) =>
+        new Date(a.date) -
+        new Date(b.date)
+    )
+    .forEach(
+      (item, index) => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "important-date-item";
+
+        div.innerHTML = `
+          <strong>${item.name}</strong>
+          <span>${item.date}</span>
+          <button onclick="deleteImportantDate(${index})">
+            Delete
+          </button>
+        `;
+
+        list.appendChild(div);
+      }
+    );
+}
+
+
+function deleteImportantDate(index) {
+
+  importantDates.splice(index, 1);
+
+  localStorage.setItem(
+    "importantDates",
+    JSON.stringify(importantDates)
+  );
+
+  displayImportantDates();
+}
+
+
+/* =========================
+   LOAD EVERYTHING
+========================= */
+
+displayCalendar();
+displayReminders();
+displayGoals();
+displayExpenses();
+displayImportantDates();
+
+</script>
+
+
+<style>
+
+/* CALENDAR */
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.calendar-controls h3 {
+  margin: 0;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-weekdays div {
+  text-align: center;
+  font-weight: bold;
+  padding: 8px;
+}
+
+.calendar-day {
+  min-height: 80px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.calendar-day.empty {
+  background: transparent;
+}
+
+.calendar-reminder {
+  margin-top: 5px;
+  padding: 3px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+
+/* REMINDERS */
+
+.reminder-form,
+.goal-form,
+.budget-form,
+.important-date-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.reminder-item,
+.goal-item,
+.expense-item,
+.important-date-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+
+/* GOALS */
+
+.goal-item span {
+  flex: 1;
+}
+
+
+/* BUDGET */
+
+.budget-total {
+  font-size: 22px;
+  margin: 15px 0;
+  padding: 15px;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .calendar-day {
+    min-height: 60px;
+    font-size: 12px;
+  }
+
+  .calendar-weekdays div {
+    font-size: 12px;
+  }
+
+  .reminder-item,
+  .goal-item,
+  .expense-item,
+  .important-date-item {
+    flex-wrap: wrap;
+  }
+
+}
+
+</style>
