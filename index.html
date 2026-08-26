@@ -4398,3 +4398,200 @@ window.addEventListener(
 );
 
 </script>
+<!-- =========================================
+     WORKING NAVIGATION FIX
+========================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const nav = document.querySelector(".planner-nav");
+
+  if (!nav) return;
+
+  const buttons = nav.querySelectorAll("button");
+
+  /* Find a section by the words in its heading */
+
+  function findSection(searchWords) {
+
+    const sections =
+      document.querySelectorAll(".planner-section");
+
+    for (const section of sections) {
+
+      const heading =
+        section.querySelector("h1, h2, h3");
+
+      if (!heading) continue;
+
+      const headingText =
+        heading.textContent.toLowerCase().trim();
+
+      for (const word of searchWords) {
+
+        if (headingText.includes(word)) {
+          return section;
+        }
+
+      }
+
+    }
+
+    return null;
+  }
+
+
+  /* DASHBOARD */
+
+  if (buttons[0]) {
+
+    buttons[0].onclick = function (event) {
+
+      event.preventDefault();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    };
+
+  }
+
+
+  /* CLASSES */
+
+  if (buttons[1]) {
+
+    buttons[1].onclick = function (event) {
+
+      event.preventDefault();
+
+      const section =
+        findSection(["my classes", "classes"]);
+
+      if (section) {
+
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
+
+    };
+
+  }
+
+
+  /* ASSIGNMENTS */
+
+  if (buttons[2]) {
+
+    buttons[2].onclick = function (event) {
+
+      event.preventDefault();
+
+      const section =
+        findSection([
+          "assignments",
+          "upcoming assignments"
+        ]);
+
+      if (section) {
+
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
+
+    };
+
+  }
+
+
+  /* CALENDAR */
+
+  if (buttons[3]) {
+
+    buttons[3].onclick = function (event) {
+
+      event.preventDefault();
+
+      const section =
+        findSection(["calendar"]);
+
+      if (section) {
+
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
+
+    };
+
+  }
+
+
+  /* TO-DO */
+
+  if (buttons[4]) {
+
+    buttons[4].onclick = function (event) {
+
+      event.preventDefault();
+
+      const section =
+        findSection([
+          "to-do",
+          "to do",
+          "todo"
+        ]);
+
+      if (section) {
+
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
+
+    };
+
+  }
+
+
+  /* NOTES */
+
+  if (buttons[5]) {
+
+    buttons[5].onclick = function (event) {
+
+      event.preventDefault();
+
+      const section =
+        findSection(["notes"]);
+
+      if (section) {
+
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
+
+    };
+
+  }
+
+});
+
+</script>
