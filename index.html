@@ -4687,3 +4687,45 @@ document.querySelectorAll("button, a").forEach((element) => {
 /* ===== END MAIN NAVIGATION FIX ===== */
   </script>
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Make the top navigation buttons work
+  const topButtons = document.querySelectorAll("nav button, header button");
+
+  topButtons.forEach(button => {
+    const text = button.textContent.trim().toLowerCase();
+
+    button.addEventListener("click", function () {
+      let target = "";
+
+      if (text.includes("dashboard")) target = "dashboard";
+      else if (text.includes("assignment")) target = "assignments";
+      else if (text.includes("grade")) target = "grades";
+      else if (text.includes("test")) target = "tests";
+      else if (text.includes("lecture") || text.includes("syllabus")) target = "lectures";
+      else if (text.includes("calendar")) target = "calendar";
+
+      if (target) {
+        // Try the existing showSection function
+        if (typeof showSection === "function") {
+          showSection(target);
+        } else {
+          // Fallback: show the matching section directly
+          document.querySelectorAll(".section").forEach(section => {
+            section.style.display = "none";
+          });
+
+          const section = document.getElementById(target);
+          if (section) {
+            section.style.display = "block";
+          }
+        }
+
+        // Make the clicked button look selected
+        topButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+      }
+    });
+  });
+});
+</script>
