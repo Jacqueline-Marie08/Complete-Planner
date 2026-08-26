@@ -87,7 +87,9 @@ h2 {
   gap: 15px;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #d5d5d5;
@@ -127,7 +129,8 @@ button {
   color: white;
 }
 
-.assignment {
+.assignment,
+.grade-item {
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   padding: 18px;
@@ -152,7 +155,8 @@ button {
   margin-bottom: 7px;
 }
 
-.assignment-info {
+.assignment-info,
+.grade-info {
   color: #666;
   font-size: 14px;
   line-height: 1.7;
@@ -195,7 +199,7 @@ button {
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 15px;
   margin-bottom: 25px;
 }
@@ -209,7 +213,7 @@ button {
 }
 
 .stat-number {
-  font-size: 28px;
+  font-size: 27px;
   font-weight: bold;
   color: #6c63a8;
 }
@@ -217,6 +221,7 @@ button {
 .stat-label {
   color: #666;
   margin-top: 5px;
+  font-size: 14px;
 }
 
 .class-card {
@@ -334,16 +339,59 @@ button {
   width: auto;
 }
 
+.gpa-box {
+  background: #f0eef9;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.gpa-number {
+  font-size: 42px;
+  font-weight: bold;
+  color: #6c63a8;
+}
+
+.grade-letter {
+  font-size: 22px;
+  font-weight: bold;
+  color: #6c63a8;
+}
+
+.class-grade-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 15px;
+}
+
+.class-grade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.class-grade-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #6c63a8;
+}
+
+@media (max-width: 850px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 700px) {
   .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .assignment {
+  .assignment,
+  .grade-item {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -361,11 +409,37 @@ button {
 <div class="container">
 
 <div class="tabs">
-  <button class="tab-button active" onclick="showSection('dashboard',this)">🏠 Dashboard</button>
-  <button class="tab-button" onclick="showSection('assignments',this)">📝 Assignments</button>
-  <button class="tab-button" onclick="showSection('calendar',this)">📅 Calendar</button>
-  <button class="tab-button" onclick="showSection('classes',this)">📚 Classes</button>
-  <button class="tab-button" onclick="showSection('schedule',this)">🕐 Schedule</button>
+
+<button class="tab-button active"
+onclick="showSection('dashboard',this)">
+🏠 Dashboard
+</button>
+
+<button class="tab-button"
+onclick="showSection('assignments',this)">
+📝 Assignments
+</button>
+
+<button class="tab-button"
+onclick="showSection('calendar',this)">
+📅 Calendar
+</button>
+
+<button class="tab-button"
+onclick="showSection('classes',this)">
+📚 Classes
+</button>
+
+<button class="tab-button"
+onclick="showSection('schedule',this)">
+🕐 Schedule
+</button>
+
+<button class="tab-button"
+onclick="showSection('grades',this)">
+🎓 Grades
+</button>
+
 </div>
 
 <!-- DASHBOARD -->
@@ -394,6 +468,11 @@ button {
 <div class="stat-label">High Priority</div>
 </div>
 
+<div class="stat">
+<div class="stat-number" id="dashboardGPA">—</div>
+<div class="stat-label">Current GPA</div>
+</div>
+
 </div>
 
 <div class="card">
@@ -415,7 +494,9 @@ button {
 
 <div>
 <label>Assignment Name</label>
-<input id="assignmentName" type="text" placeholder="Example: Chapter 5 Homework">
+<input id="assignmentName"
+type="text"
+placeholder="Example: Chapter 5 Homework">
 </div>
 
 <div>
@@ -441,11 +522,14 @@ button {
 
 <div class="full">
 <label>Notes</label>
-<textarea id="assignmentNotes" placeholder="Optional notes..."></textarea>
+<textarea id="assignmentNotes"
+placeholder="Optional notes..."></textarea>
 </div>
 
 <div class="full">
-<button class="primary" onclick="addAssignment()">Add Assignment</button>
+<button class="primary" onclick="addAssignment()">
+Add Assignment
+</button>
 </div>
 
 </div>
@@ -455,11 +539,14 @@ button {
 
 <h2>📝 My Assignments</h2>
 
-<select id="filterAssignments" onchange="renderAssignments()">
+<select id="filterAssignments"
+onchange="renderAssignments()">
+
 <option value="all">All Assignments</option>
 <option value="active">To Do</option>
 <option value="completed">Completed</option>
 <option value="high">High Priority</option>
+
 </select>
 
 <div id="assignmentList"></div>
@@ -476,12 +563,23 @@ button {
 <h2>📅 Assignment Calendar</h2>
 
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-<button class="primary" onclick="previousMonth()">← Previous</button>
+
+<button class="primary"
+onclick="previousMonth()">
+← Previous
+</button>
+
 <h3 id="calendarTitle"></h3>
-<button class="primary" onclick="nextMonth()">Next →</button>
+
+<button class="primary"
+onclick="nextMonth()">
+Next →
+</button>
+
 </div>
 
 <div class="calendar-grid">
+
 <div class="day-name">Sun</div>
 <div class="day-name">Mon</div>
 <div class="day-name">Tue</div>
@@ -489,9 +587,11 @@ button {
 <div class="day-name">Thu</div>
 <div class="day-name">Fri</div>
 <div class="day-name">Sat</div>
+
 </div>
 
-<div id="calendarDays" class="calendar-grid"></div>
+<div id="calendarDays"
+class="calendar-grid"></div>
 
 </div>
 </div>
@@ -508,22 +608,27 @@ button {
 
 <div>
 <label>Class Name</label>
-<input id="className" placeholder="Example: Business Law">
+<input id="className"
+placeholder="Example: Business Law">
 </div>
 
 <div>
 <label>Professor</label>
-<input id="classProfessor" placeholder="Professor name">
+<input id="classProfessor"
+placeholder="Professor name">
 </div>
 
 <div>
 <label>Location</label>
-<input id="classLocation" placeholder="Example: Wilson Hall 101">
+<input id="classLocation"
+placeholder="Example: Wilson Hall 101">
 </div>
 
 <div>
 <label>Color</label>
-<input id="classColor" type="color" value="#6c63a8">
+<input id="classColor"
+type="color"
+value="#6c63a8">
 </div>
 
 <div>
@@ -542,23 +647,51 @@ button {
 
 <div class="day-buttons">
 
-<label><input type="checkbox" value="Monday"> Mon</label>
-<label><input type="checkbox" value="Tuesday"> Tue</label>
-<label><input type="checkbox" value="Wednesday"> Wed</label>
-<label><input type="checkbox" value="Thursday"> Thu</label>
-<label><input type="checkbox" value="Friday"> Fri</label>
+<label>
+<input type="checkbox" value="Monday">
+Mon
+</label>
+
+<label>
+<input type="checkbox" value="Tuesday">
+Tue
+</label>
+
+<label>
+<input type="checkbox" value="Wednesday">
+Wed
+</label>
+
+<label>
+<input type="checkbox" value="Thursday">
+Thu
+</label>
+
+<label>
+<input type="checkbox" value="Friday">
+Fri
+</label>
 
 </div>
 
 </div>
 
 <div class="full">
+
 <label>Notes</label>
-<textarea id="classNotes" placeholder="Optional class notes..."></textarea>
+
+<textarea id="classNotes"
+placeholder="Optional class notes..."></textarea>
+
 </div>
 
 <div class="full">
-<button class="primary" onclick="addClass()">Add Class</button>
+
+<button class="primary"
+onclick="addClass()">
+Add Class
+</button>
+
 </div>
 
 </div>
@@ -566,8 +699,11 @@ button {
 </div>
 
 <div class="card">
+
 <h2>📚 My Classes</h2>
+
 <div id="classList"></div>
+
 </div>
 
 </div>
@@ -580,28 +716,155 @@ button {
 
 <h2>🕐 Weekly Schedule</h2>
 
-<p>Your classes will automatically appear here based on the information you enter under <b>Classes</b>.</p>
+<p>
+Your classes automatically appear here based on the information you enter under Classes.
+</p>
 
 <div class="schedule">
 
 <div class="schedule-grid">
 
-<div class="schedule-cell schedule-header">Time</div>
-<div class="schedule-cell schedule-header">Monday</div>
-<div class="schedule-cell schedule-header">Tuesday</div>
-<div class="schedule-cell schedule-header">Wednesday</div>
-<div class="schedule-cell schedule-header">Thursday</div>
-<div class="schedule-cell schedule-header">Friday</div>
-<div class="schedule-cell schedule-header">Saturday</div>
-<div class="schedule-cell schedule-header">Sunday</div>
+<div class="schedule-cell schedule-header">
+Time
+</div>
 
-<div id="scheduleRows" style="display:contents;"></div>
+<div class="schedule-cell schedule-header">
+Monday
+</div>
+
+<div class="schedule-cell schedule-header">
+Tuesday
+</div>
+
+<div class="schedule-cell schedule-header">
+Wednesday
+</div>
+
+<div class="schedule-cell schedule-header">
+Thursday
+</div>
+
+<div class="schedule-cell schedule-header">
+Friday
+</div>
+
+<div class="schedule-cell schedule-header">
+Saturday
+</div>
+
+<div class="schedule-cell schedule-header">
+Sunday
+</div>
+
+<div id="scheduleRows"
+style="display:contents;">
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- GRADES -->
+
+<div id="grades" class="section">
+
+<div class="card">
+
+<h2>🎓 Grades & GPA</h2>
+
+<div class="gpa-box">
+
+<div>Current GPA</div>
+
+<div class="gpa-number"
+id="overallGPA">
+—
+</div>
+
+<div id="gpaMessage">
+Add grades to calculate your GPA.
+</div>
+
+</div>
+
+<h3>Add Grade</h3>
+
+<div class="form-grid">
+
+<div>
+<label>Class</label>
+
+<select id="gradeClass">
+<option value="">Select a class</option>
+</select>
+
+</div>
+
+<div>
+<label>Assignment / Exam</label>
+
+<input id="gradeName"
+placeholder="Example: Midterm Exam">
+
+</div>
+
+<div>
+<label>Points Earned</label>
+
+<input id="pointsEarned"
+type="number"
+min="0"
+step="0.01"
+placeholder="85">
+
+</div>
+
+<div>
+<label>Points Possible</label>
+
+<input id="pointsPossible"
+type="number"
+min="0"
+step="0.01"
+placeholder="100">
+
+</div>
+
+<div>
+<label>Class Credits</label>
+
+<input id="classCredits"
+type="number"
+min="0"
+step="0.5"
+placeholder="3">
+
+</div>
+
+<div class="full">
+
+<button class="primary"
+onclick="addGrade()">
+Add Grade
+</button>
 
 </div>
 
 </div>
 
 </div>
+
+<div class="card">
+
+<h2>📊 My Grades</h2>
+
+<div id="gradesList"></div>
+
+</div>
+
 </div>
 
 </div>
@@ -614,9 +877,40 @@ JSON.parse(localStorage.getItem("assignments")) || [];
 let classes =
 JSON.parse(localStorage.getItem("classes")) || [];
 
+let grades =
+JSON.parse(localStorage.getItem("grades")) || [];
+
 let currentCalendarDate = new Date();
 
-function saveData() {
+const gradeScale = [
+
+{letter:"A",points:4.0,min:93},
+
+{letter:"A-",points:3.7,min:90},
+
+{letter:"B+",points:3.3,min:87},
+
+{letter:"B",points:3.0,min:83},
+
+{letter:"B-",points:2.7,min:80},
+
+{letter:"C+",points:2.3,min:77},
+
+{letter:"C",points:2.0,min:73},
+
+{letter:"C-",points:1.7,min:70},
+
+{letter:"D+",points:1.3,min:67},
+
+{letter:"D",points:1.0,min:63},
+
+{letter:"D-",points:0.7,min:60},
+
+{letter:"F",points:0.0,min:0}
+
+];
+
+function saveData(){
 
 localStorage.setItem(
 "assignments",
@@ -628,41 +922,58 @@ localStorage.setItem(
 JSON.stringify(classes)
 );
 
+localStorage.setItem(
+"grades",
+JSON.stringify(grades)
+);
+
 }
 
-function showSection(id,button) {
+function showSection(id,button){
 
-document.querySelectorAll(".section").forEach(s =>
+document.querySelectorAll(".section")
+.forEach(s =>
 s.classList.remove("active")
 );
 
-document.querySelectorAll(".tab-button").forEach(b =>
+document.querySelectorAll(".tab-button")
+.forEach(b =>
 b.classList.remove("active")
 );
 
-document.getElementById(id).classList.add("active");
+document.getElementById(id)
+.classList.add("active");
 
 button.classList.add("active");
 
-if(id === "calendar") renderCalendar();
+if(id==="calendar")
+renderCalendar();
 
-if(id === "schedule") renderSchedule();
+if(id==="schedule")
+renderSchedule();
+
+if(id==="grades")
+renderGrades();
 
 }
 
-function addAssignment() {
+function addAssignment(){
 
 const name =
-document.getElementById("assignmentName").value.trim();
+document.getElementById("assignmentName")
+.value.trim();
 
-if(!name) {
+if(!name){
+
 alert("Please enter an assignment name.");
+
 return;
+
 }
 
-const assignment = {
+assignments.push({
 
-id: Date.now(),
+id:Date.now(),
 
 name:name,
 
@@ -680,9 +991,7 @@ document.getElementById("assignmentNotes").value.trim(),
 
 completed:false
 
-};
-
-assignments.push(assignment);
+});
 
 saveData();
 
@@ -698,7 +1007,7 @@ alert("Assignment added!");
 
 }
 
-function renderAssignments() {
+function renderAssignments(){
 
 const list =
 document.getElementById("assignmentList");
@@ -738,7 +1047,8 @@ return;
 list.innerHTML=filtered.map(a=>{
 
 const dateText=a.date
-?new Date(a.date+"T00:00:00").toLocaleDateString()
+?new Date(a.date+"T00:00:00")
+.toLocaleDateString()
 :"No due date";
 
 return `
@@ -758,11 +1068,14 @@ ${escapeHtml(a.name)}
 📅 Due: ${dateText}<br>
 
 ⭐ Priority:
+
 <span class="priority ${a.priority.toLowerCase()}">
 ${a.priority}
 </span>
 
-${a.notes?`<br>📌 ${escapeHtml(a.notes)}`:""}
+${a.notes
+?`<br>📌 ${escapeHtml(a.notes)}`
+:""}
 
 </div>
 
@@ -772,12 +1085,16 @@ ${a.notes?`<br>📌 ${escapeHtml(a.notes)}`:""}
 
 <button class="success"
 onclick="toggleComplete(${a.id})">
+
 ${a.completed?"Undo":"Complete"}
+
 </button>
 
 <button class="danger"
 onclick="deleteAssignment(${a.id})">
+
 Delete
+
 </button>
 
 </div>
@@ -794,7 +1111,8 @@ function toggleComplete(id){
 
 const a=assignments.find(x=>x.id===id);
 
-if(a)a.completed=!a.completed;
+if(a)
+a.completed=!a.completed;
 
 saveData();
 
@@ -806,7 +1124,8 @@ renderCalendar();
 
 function deleteAssignment(id){
 
-if(!confirm("Delete this assignment?"))return;
+if(!confirm("Delete this assignment?"))
+return;
 
 assignments=
 assignments.filter(a=>a.id!==id);
@@ -834,13 +1153,23 @@ assignments.filter(
 a=>a.priority==="High"&&!a.completed
 ).length;
 
-document.getElementById("totalCount").textContent=total;
+document.getElementById("totalCount")
+.textContent=total;
 
-document.getElementById("activeCount").textContent=active;
+document.getElementById("activeCount")
+.textContent=active;
 
-document.getElementById("completedCount").textContent=completed;
+document.getElementById("completedCount")
+.textContent=completed;
 
-document.getElementById("highCount").textContent=high;
+document.getElementById("highCount")
+.textContent=high;
+
+const gpa=calculateGPA();
+
+document.getElementById("dashboardGPA")
+.textContent=
+gpa===null?"—":gpa.toFixed(2);
 
 const upcoming=
 assignments
@@ -855,7 +1184,7 @@ return new Date(a.date)-new Date(b.date);
 })
 .slice(0,5);
 
-const box=
+const box =
 document.getElementById("upcomingAssignments");
 
 if(upcoming.length===0){
@@ -870,7 +1199,8 @@ return;
 box.innerHTML=upcoming.map(a=>{
 
 const dateText=a.date
-?new Date(a.date+"T00:00:00").toLocaleDateString()
+?new Date(a.date+"T00:00:00")
+.toLocaleDateString()
 :"No due date";
 
 return `
@@ -884,8 +1214,11 @@ ${escapeHtml(a.name)}
 </div>
 
 <div class="assignment-info">
+
 📚 ${escapeHtml(a.className||"No class")}<br>
+
 📅 ${dateText}
+
 </div>
 
 </div>
@@ -905,7 +1238,8 @@ ${a.priority}
 function addClass(){
 
 const name=
-document.getElementById("className").value.trim();
+document.getElementById("className")
+.value.trim();
 
 if(!name){
 
@@ -922,17 +1256,19 @@ document.querySelectorAll(
 )
 ).map(x=>x.value);
 
-const newClass={
+classes.push({
 
 id:Date.now(),
 
 name:name,
 
 professor:
-document.getElementById("classProfessor").value.trim(),
+document.getElementById("classProfessor")
+.value.trim(),
 
 location:
-document.getElementById("classLocation").value.trim(),
+document.getElementById("classLocation")
+.value.trim(),
 
 color:
 document.getElementById("classColor").value,
@@ -946,11 +1282,10 @@ document.getElementById("classEnd").value,
 days:days,
 
 notes:
-document.getElementById("classNotes").value.trim()
+document.getElementById("classNotes")
+.value.trim()
 
-};
-
-classes.push(newClass);
+});
 
 saveData();
 
@@ -967,6 +1302,7 @@ document
 
 renderClasses();
 updateClassDropdown();
+updateGradeClassDropdown();
 renderSchedule();
 
 }
@@ -993,7 +1329,9 @@ list.innerHTML=classes.map(c=>`
 
 <div class="class-name"
 style="border-left:6px solid ${c.color};padding-left:10px;">
+
 ${escapeHtml(c.name)}
+
 </div>
 
 <button class="danger"
@@ -1035,7 +1373,8 @@ ${c.notes
 
 function deleteClass(id){
 
-if(!confirm("Delete this class?"))return;
+if(!confirm("Delete this class?"))
+return;
 
 classes=
 classes.filter(c=>c.id!==id);
@@ -1044,6 +1383,7 @@ saveData();
 
 renderClasses();
 updateClassDropdown();
+updateGradeClassDropdown();
 renderSchedule();
 
 }
@@ -1058,16 +1398,374 @@ dropdown.innerHTML=
 
 classes.forEach(c=>{
 
-const option=
-document.createElement("option");
+const option=document.createElement("option");
 
 option.value=c.name;
-
 option.textContent=c.name;
 
 dropdown.appendChild(option);
 
 });
+
+}
+
+function updateGradeClassDropdown(){
+
+const dropdown=
+document.getElementById("gradeClass");
+
+dropdown.innerHTML=
+'<option value="">Select a class</option>';
+
+classes.forEach(c=>{
+
+const option=
+document.createElement("option");
+
+option.value=c.name;
+option.textContent=c.name;
+
+dropdown.appendChild(option);
+
+});
+
+}
+
+function getLetterGrade(percent){
+
+for(const grade of gradeScale){
+
+if(percent>=grade.min)
+return grade;
+
+}
+
+return gradeScale[gradeScale.length-1];
+
+}
+
+function addGrade(){
+
+const className=
+document.getElementById("gradeClass").value;
+
+const name=
+document.getElementById("gradeName").value.trim();
+
+const earned=
+parseFloat(
+document.getElementById("pointsEarned").value
+);
+
+const possible=
+parseFloat(
+document.getElementById("pointsPossible").value
+);
+
+const credits=
+parseFloat(
+document.getElementById("classCredits").value
+);
+
+if(!className){
+
+alert("Please select a class.");
+
+return;
+
+}
+
+if(!name){
+
+alert("Please enter an assignment or exam name.");
+
+return;
+
+}
+
+if(
+isNaN(earned) ||
+isNaN(possible) ||
+possible<=0 ||
+earned<0
+){
+
+alert("Please enter valid points.");
+
+return;
+
+}
+
+if(earned>possible){
+
+alert("Points earned cannot be greater than points possible.");
+
+return;
+
+}
+
+if(isNaN(credits) || credits<=0){
+
+alert("Please enter the class credits.");
+
+return;
+
+}
+
+const percentage=
+(earned/possible)*100;
+
+const letter=
+getLetterGrade(percentage);
+
+grades.push({
+
+id:Date.now(),
+
+className:className,
+
+name:name,
+
+earned:earned,
+
+possible:possible,
+
+credits:credits,
+
+percentage:percentage,
+
+letter:letter.letter,
+
+gradePoints:letter.points
+
+});
+
+saveData();
+
+document.getElementById("gradeName").value="";
+document.getElementById("pointsEarned").value="";
+document.getElementById("pointsPossible").value="";
+document.getElementById("classCredits").value="";
+
+renderGrades();
+updateDashboard();
+
+}
+
+function calculateClassGrade(className){
+
+const classGrades=
+grades.filter(g=>g.className===className);
+
+if(classGrades.length===0)
+return null;
+
+let earned=0;
+let possible=0;
+
+classGrades.forEach(g=>{
+
+earned+=Number(g.earned);
+possible+=Number(g.possible);
+
+});
+
+const percentage=
+possible>0?(earned/possible)*100:0;
+
+return {
+
+percentage:percentage,
+
+grade:getLetterGrade(percentage)
+
+};
+
+}
+
+function calculateGPA(){
+
+if(classes.length===0)
+return null;
+
+let totalQualityPoints=0;
+let totalCredits=0;
+
+classes.forEach(c=>{
+
+const result=
+calculateClassGrade(c.name);
+
+if(!result)
+return;
+
+const classGradePoints=
+result.grade.points;
+
+const classGradeEntries=
+grades.filter(g=>g.className===c.name);
+
+const credits=
+classGradeEntries.length>0
+?Number(classGradeEntries[0].credits)
+:0;
+
+totalQualityPoints+=
+classGradePoints*credits;
+
+totalCredits+=credits;
+
+});
+
+if(totalCredits===0)
+return null;
+
+return totalQualityPoints/totalCredits;
+
+}
+
+function renderGrades(){
+
+const list=
+document.getElementById("gradesList");
+
+if(grades.length===0){
+
+list.innerHTML=
+'<div class="empty">No grades added yet.</div>';
+
+document.getElementById("overallGPA")
+.textContent="—";
+
+document.getElementById("gpaMessage")
+.textContent=
+"Add grades to calculate your GPA.";
+
+return;
+
+}
+
+const gpa=calculateGPA();
+
+document.getElementById("overallGPA")
+.textContent=
+gpa===null?"—":gpa.toFixed(2);
+
+document.getElementById("gpaMessage")
+.textContent=
+gpa===null
+?"Add grades to calculate your GPA."
+:"Based on the grades you have entered.";
+
+list.innerHTML="";
+
+classes.forEach(c=>{
+
+const result=
+calculateClassGrade(c.name);
+
+if(!result)
+return;
+
+const card=
+document.createElement("div");
+
+card.className="class-grade-card";
+
+card.innerHTML=`
+
+<div class="class-grade-header">
+
+<div>
+
+<h3>${escapeHtml(c.name)}</h3>
+
+<div class="grade-info">
+
+Current Average:
+${result.percentage.toFixed(1)}%
+
+</div>
+
+</div>
+
+<div class="class-grade-number">
+
+${result.grade.letter}
+
+</div>
+
+</div>
+
+<div id="grade-items-${c.id}"></div>
+
+`;
+
+list.appendChild(card);
+
+const items=
+document.getElementById(
+`grade-items-${c.id}`
+);
+
+grades
+.filter(g=>g.className===c.name)
+.forEach(g=>{
+
+const item=
+document.createElement("div");
+
+item.className="grade-item";
+
+item.innerHTML=`
+
+<div>
+
+<strong>
+${escapeHtml(g.name)}
+</strong>
+
+<div class="grade-info">
+
+${g.earned} / ${g.possible}
+
+(${g.percentage.toFixed(1)}%)
+
+· ${g.letter}
+
+</div>
+
+</div>
+
+<button class="danger"
+onclick="deleteGrade(${g.id})">
+
+Delete
+
+</button>
+
+`;
+
+items.appendChild(item);
+
+});
+
+});
+
+}
+
+function deleteGrade(id){
+
+if(!confirm("Delete this grade?"))
+return;
+
+grades=
+grades.filter(g=>g.id!==id);
+
+saveData();
+
+renderGrades();
+updateDashboard();
 
 }
 
@@ -1102,7 +1800,8 @@ new Date(year,month+1,0).getDate();
 
 for(let i=0;i<firstDay;i++){
 
-const empty=document.createElement("div");
+const empty=
+document.createElement("div");
 
 empty.className="calendar-day";
 
@@ -1171,15 +1870,10 @@ document.getElementById("scheduleRows");
 
 rows.innerHTML="";
 
-const times=[];
-
 for(let hour=7;hour<=20;hour++){
 
-times.push(`${hour}:00`);
-
-}
-
-times.forEach(time=>{
+const time=
+`${String(hour).padStart(2,"0")}:00`;
 
 const timeCell=
 document.createElement("div");
@@ -1192,7 +1886,7 @@ formatTime(time);
 
 rows.appendChild(timeCell);
 
-const dayNames=[
+const days=[
 "Monday",
 "Tuesday",
 "Wednesday",
@@ -1202,7 +1896,7 @@ const dayNames=[
 "Sunday"
 ];
 
-dayNames.forEach(day=>{
+days.forEach(day=>{
 
 const cell=
 document.createElement("div");
@@ -1214,9 +1908,7 @@ classes.forEach(c=>{
 if(
 c.days.includes(day) &&
 c.start &&
-c.start.startsWith(
-String(time.split(":")[0]).padStart(2,"0")
-)
+c.start.startsWith(time)
 ){
 
 const item=
@@ -1228,7 +1920,9 @@ item.style.background=c.color;
 
 item.innerHTML=
 `<b>${escapeHtml(c.name)}</b><br>
-${c.location?escapeHtml(c.location):""}`;
+${c.location
+?escapeHtml(c.location)
+:""}`;
 
 cell.appendChild(item);
 
@@ -1240,13 +1934,14 @@ rows.appendChild(cell);
 
 });
 
-});
+}
 
 }
 
 function formatTime(time){
 
-if(!time)return "";
+if(!time)
+return "";
 
 const [hour,minute]=time.split(":");
 
@@ -1262,7 +1957,8 @@ return `${h}:${minute} ${ampm}`;
 
 function escapeHtml(text){
 
-const div=document.createElement("div");
+const div=
+document.createElement("div");
 
 div.textContent=text;
 
@@ -1271,11 +1967,13 @@ return div.innerHTML;
 }
 
 updateClassDropdown();
+updateGradeClassDropdown();
 renderClasses();
 renderAssignments();
 updateDashboard();
 renderCalendar();
 renderSchedule();
+renderGrades();
 
 </script>
 
