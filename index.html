@@ -6,395 +6,440 @@
 <title>Student Planner</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+
+body{
+margin:0;
+background:#f5f6fa;
+color:#263238;
 }
 
-body {
-  margin: 0;
-  background: #f5f6fa;
-  color: #263238;
+header{
+background:#6c63a8;
+color:white;
+padding:25px;
+text-align:center;
 }
 
-header {
-  background: #6c63a8;
-  color: white;
-  padding: 25px;
-  text-align: center;
+header h1{
+margin:0;
+font-size:32px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 32px;
+header p{
+margin:8px 0 0;
 }
 
-header p {
-  margin: 8px 0 0;
+.container{
+max-width:1150px;
+margin:30px auto;
+padding:0 20px;
 }
 
-.container {
-  max-width: 1150px;
-  margin: 30px auto;
-  padding: 0 20px;
+.tabs{
+display:flex;
+gap:10px;
+margin-bottom:25px;
+flex-wrap:wrap;
 }
 
-.tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-  flex-wrap: wrap;
+.tab-button{
+border:none;
+padding:12px 18px;
+border-radius:10px;
+background:white;
+cursor:pointer;
+font-weight:bold;
+box-shadow:0 2px 6px rgba(0,0,0,.08);
 }
 
-.tab-button {
-  border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+.tab-button.active{
+background:#6c63a8;
+color:white;
 }
 
-.tab-button.active {
-  background: #6c63a8;
-  color: white;
+.section{
+display:none;
 }
 
-.section {
-  display: none;
+.section.active{
+display:block;
 }
 
-.section.active {
-  display: block;
+.card{
+background:white;
+border-radius:15px;
+padding:25px;
+margin-bottom:25px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
-.card {
-  background: white;
-  border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 25px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.08);
+h2{
+margin-top:0;
 }
 
-h2 {
-  margin-top: 0;
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+input,select,textarea{
+width:100%;
+padding:12px;
+border:1px solid #d5d5d5;
+border-radius:8px;
+font-size:15px;
 }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d5d5d5;
-  border-radius: 8px;
-  font-size: 15px;
+textarea{
+min-height:90px;
+resize:vertical;
 }
 
-textarea {
-  min-height: 90px;
-  resize: vertical;
+.full{
+grid-column:1/-1;
 }
 
-.full {
-  grid-column: 1 / -1;
+button{
+border:none;
+border-radius:8px;
+padding:11px 16px;
+cursor:pointer;
+font-weight:bold;
 }
 
-button {
-  border: none;
-  border-radius: 8px;
-  padding: 11px 16px;
-  cursor: pointer;
-  font-weight: bold;
+.primary{
+background:#6c63a8;
+color:white;
 }
 
-.primary {
-  background: #6c63a8;
-  color: white;
+.danger{
+background:#e57373;
+color:white;
 }
 
-.danger {
-  background: #e57373;
-  color: white;
-}
-
-.success {
-  background: #66bb6a;
-  color: white;
+.success{
+background:#66bb6a;
+color:white;
 }
 
 .assignment,
-.grade-item {
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 18px;
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  align-items: center;
+.grade-item{
+border:1px solid #e0e0e0;
+border-radius:12px;
+padding:18px;
+margin-top:15px;
+display:flex;
+justify-content:space-between;
+gap:15px;
+align-items:center;
 }
 
-.assignment.completed {
-  opacity: .55;
+.assignment.completed{
+opacity:.55;
 }
 
-.assignment.completed .assignment-title {
-  text-decoration: line-through;
+.assignment.completed .assignment-title{
+text-decoration:line-through;
 }
 
-.assignment-title {
-  font-size: 19px;
-  font-weight: bold;
-  margin-bottom: 7px;
+.assignment-title{
+font-size:19px;
+font-weight:bold;
+margin-bottom:7px;
 }
 
 .assignment-info,
-.grade-info {
-  color: #666;
-  font-size: 14px;
-  line-height: 1.7;
+.grade-info{
+color:#666;
+font-size:14px;
+line-height:1.7;
 }
 
-.priority {
-  display: inline-block;
-  padding: 4px 9px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
+.priority{
+display:inline-block;
+padding:4px 9px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
 }
 
-.high {
-  background: #ffcdd2;
-  color: #b71c1c;
+.high{
+background:#ffcdd2;
+color:#b71c1c;
 }
 
-.medium {
-  background: #fff3cd;
-  color: #856404;
+.medium{
+background:#fff3cd;
+color:#856404;
 }
 
-.low {
-  background: #d9f2d9;
-  color: #2e7d32;
+.low{
+background:#d9f2d9;
+color:#2e7d32;
 }
 
-.actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
 }
 
-.empty {
-  text-align: center;
-  padding: 30px;
-  color: #777;
+.empty{
+text-align:center;
+padding:30px;
+color:#777;
 }
 
-.stats {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
+.stats{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:15px;
+margin-bottom:25px;
 }
 
-.stat {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+.stat{
+background:white;
+border-radius:12px;
+padding:20px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,.07);
 }
 
-.stat-number {
-  font-size: 27px;
-  font-weight: bold;
-  color: #6c63a8;
+.stat-number{
+font-size:27px;
+font-weight:bold;
+color:#6c63a8;
 }
 
-.stat-label {
-  color: #666;
-  margin-top: 5px;
-  font-size: 14px;
+.stat-label{
+color:#666;
+margin-top:5px;
+font-size:14px;
 }
 
-.class-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 18px;
-  margin-top: 15px;
+.class-card{
+border:1px solid #e0e0e0;
+border-radius:12px;
+padding:18px;
+margin-top:15px;
 }
 
-.class-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+.class-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
 }
 
-.class-name {
-  font-size: 20px;
-  font-weight: bold;
+.class-name{
+font-size:20px;
+font-weight:bold;
 }
 
-.class-details {
-  color: #666;
-  line-height: 1.8;
-  margin-top: 10px;
+.class-details{
+color:#666;
+line-height:1.8;
+margin-top:10px;
 }
 
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+.calendar-grid{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:5px;
 }
 
-.calendar-day {
-  min-height: 100px;
-  background: #fafafa;
-  border: 1px solid #eee;
-  border-radius: 7px;
-  padding: 8px;
+.calendar-day{
+min-height:100px;
+background:#fafafa;
+border:1px solid #eee;
+border-radius:7px;
+padding:8px;
 }
 
-.calendar-date {
-  font-weight: bold;
-  margin-bottom: 5px;
+.calendar-date{
+font-weight:bold;
+margin-bottom:5px;
 }
 
-.calendar-assignment {
-  background: #6c63a8;
-  color: white;
-  border-radius: 5px;
-  padding: 4px;
-  font-size: 11px;
-  margin-top: 4px;
+.calendar-assignment{
+background:#6c63a8;
+color:white;
+border-radius:5px;
+padding:4px;
+font-size:11px;
+margin-top:4px;
 }
 
-.day-name {
-  text-align: center;
-  font-weight: bold;
-  padding: 8px;
+.day-name{
+text-align:center;
+font-weight:bold;
+padding:8px;
 }
 
-.schedule {
-  overflow-x: auto;
+.schedule{
+overflow-x:auto;
 }
 
-.schedule-grid {
-  min-width: 750px;
-  display: grid;
-  grid-template-columns: 80px repeat(7, 1fr);
-  border: 1px solid #ddd;
+.schedule-grid{
+min-width:750px;
+display:grid;
+grid-template-columns:80px repeat(7,1fr);
+border:1px solid #ddd;
 }
 
-.schedule-cell {
-  min-height: 75px;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 7px;
+.schedule-cell{
+min-height:75px;
+border-right:1px solid #ddd;
+border-bottom:1px solid #ddd;
+padding:7px;
 }
 
-.schedule-header {
-  background: #f0eef9;
-  font-weight: bold;
-  text-align: center;
+.schedule-header{
+background:#f0eef9;
+font-weight:bold;
+text-align:center;
 }
 
-.schedule-time {
-  font-size: 12px;
-  color: #777;
-  text-align: center;
+.schedule-time{
+font-size:12px;
+color:#777;
+text-align:center;
 }
 
-.schedule-class {
-  background: #6c63a8;
-  color: white;
-  border-radius: 7px;
-  padding: 7px;
-  font-size: 12px;
-  margin-bottom: 4px;
+.schedule-class{
+background:#6c63a8;
+color:white;
+border-radius:7px;
+padding:7px;
+font-size:12px;
+margin-bottom:4px;
 }
 
-.day-buttons {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+.day-buttons{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
 }
 
-.day-buttons label {
-  background: #f0eef9;
-  padding: 8px 10px;
-  border-radius: 7px;
-  cursor: pointer;
+.day-buttons label{
+background:#f0eef9;
+padding:8px 10px;
+border-radius:7px;
+cursor:pointer;
 }
 
-.day-buttons input {
-  width: auto;
+.day-buttons input{
+width:auto;
 }
 
-.gpa-box {
-  background: #f0eef9;
-  border-radius: 12px;
-  padding: 25px;
-  text-align: center;
-  margin-bottom: 20px;
+.gpa-box{
+background:#f0eef9;
+border-radius:12px;
+padding:25px;
+text-align:center;
+margin-bottom:20px;
 }
 
-.gpa-number {
-  font-size: 42px;
-  font-weight: bold;
-  color: #6c63a8;
+.gpa-number{
+font-size:42px;
+font-weight:bold;
+color:#6c63a8;
 }
 
-.grade-letter {
-  font-size: 22px;
-  font-weight: bold;
-  color: #6c63a8;
+.gpa-message{
+margin-top:8px;
+color:#666;
 }
 
-.class-grade-card {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 18px;
-  margin-top: 15px;
+.class-grade-card{
+border:1px solid #ddd;
+border-radius:12px;
+padding:18px;
+margin-top:15px;
 }
 
-.class-grade-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
+.class-grade-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
 }
 
-.class-grade-number {
-  font-size: 24px;
-  font-weight: bold;
-  color: #6c63a8;
+.class-grade-number{
+font-size:28px;
+font-weight:bold;
+color:#6c63a8;
 }
 
-@media (max-width: 850px) {
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.grade-summary{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-top:15px;
 }
 
-@media (max-width: 700px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
+.grade-summary-box{
+background:#f7f7fb;
+padding:12px;
+border-radius:8px;
+text-align:center;
+}
 
-  .assignment,
-  .grade-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.grade-summary-number{
+font-size:20px;
+font-weight:bold;
+color:#6c63a8;
+}
+
+.grade-summary-label{
+font-size:12px;
+color:#666;
+margin-top:4px;
+}
+
+.progress-container{
+height:12px;
+background:#e5e5e5;
+border-radius:10px;
+overflow:hidden;
+margin-top:12px;
+}
+
+.progress-bar{
+height:100%;
+background:#6c63a8;
+border-radius:10px;
+}
+
+.tip-box{
+background:#fff8e1;
+border-radius:10px;
+padding:15px;
+margin-top:15px;
+color:#6d5700;
+}
+
+@media(max-width:850px){
+.stats{
+grid-template-columns:repeat(2,1fr);
+}
+.grade-summary{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:700px){
+.form-grid{
+grid-template-columns:1fr;
+}
+
+.assignment,
+.grade-item{
+flex-direction:column;
+align-items:flex-start;
+}
 }
 </style>
 </head>
@@ -402,41 +447,35 @@ button {
 <body>
 
 <header>
-  <h1>📚 Student Planner</h1>
-  <p>Stay organized and keep up with your college life!</p>
+<h1>📚 Student Planner</h1>
+<p>Stay organized and keep up with your college life!</p>
 </header>
 
 <div class="container">
 
 <div class="tabs">
 
-<button class="tab-button active"
-onclick="showSection('dashboard',this)">
+<button class="tab-button active" onclick="showSection('dashboard',this)">
 🏠 Dashboard
 </button>
 
-<button class="tab-button"
-onclick="showSection('assignments',this)">
+<button class="tab-button" onclick="showSection('assignments',this)">
 📝 Assignments
 </button>
 
-<button class="tab-button"
-onclick="showSection('calendar',this)">
+<button class="tab-button" onclick="showSection('calendar',this)">
 📅 Calendar
 </button>
 
-<button class="tab-button"
-onclick="showSection('classes',this)">
+<button class="tab-button" onclick="showSection('classes',this)">
 📚 Classes
 </button>
 
-<button class="tab-button"
-onclick="showSection('schedule',this)">
+<button class="tab-button" onclick="showSection('schedule',this)">
 🕐 Schedule
 </button>
 
-<button class="tab-button"
-onclick="showSection('grades',this)">
+<button class="tab-button" onclick="showSection('grades',this)">
 🎓 Grades
 </button>
 
@@ -494,9 +533,7 @@ onclick="showSection('grades',this)">
 
 <div>
 <label>Assignment Name</label>
-<input id="assignmentName"
-type="text"
-placeholder="Example: Chapter 5 Homework">
+<input id="assignmentName" type="text" placeholder="Example: Chapter 5 Homework">
 </div>
 
 <div>
@@ -522,8 +559,7 @@ placeholder="Example: Chapter 5 Homework">
 
 <div class="full">
 <label>Notes</label>
-<textarea id="assignmentNotes"
-placeholder="Optional notes..."></textarea>
+<textarea id="assignmentNotes" placeholder="Optional notes..."></textarea>
 </div>
 
 <div class="full">
@@ -539,19 +575,17 @@ Add Assignment
 
 <h2>📝 My Assignments</h2>
 
-<select id="filterAssignments"
-onchange="renderAssignments()">
-
+<select id="filterAssignments" onchange="renderAssignments()">
 <option value="all">All Assignments</option>
 <option value="active">To Do</option>
 <option value="completed">Completed</option>
 <option value="high">High Priority</option>
-
 </select>
 
 <div id="assignmentList"></div>
 
 </div>
+
 </div>
 
 <!-- CALENDAR -->
@@ -564,15 +598,13 @@ onchange="renderAssignments()">
 
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
 
-<button class="primary"
-onclick="previousMonth()">
+<button class="primary" onclick="previousMonth()">
 ← Previous
 </button>
 
 <h3 id="calendarTitle"></h3>
 
-<button class="primary"
-onclick="nextMonth()">
+<button class="primary" onclick="nextMonth()">
 Next →
 </button>
 
@@ -590,10 +622,10 @@ Next →
 
 </div>
 
-<div id="calendarDays"
-class="calendar-grid"></div>
+<div id="calendarDays" class="calendar-grid"></div>
 
 </div>
+
 </div>
 
 <!-- CLASSES -->
@@ -608,27 +640,22 @@ class="calendar-grid"></div>
 
 <div>
 <label>Class Name</label>
-<input id="className"
-placeholder="Example: Business Law">
+<input id="className" placeholder="Example: Business Law">
 </div>
 
 <div>
 <label>Professor</label>
-<input id="classProfessor"
-placeholder="Professor name">
+<input id="classProfessor" placeholder="Professor name">
 </div>
 
 <div>
 <label>Location</label>
-<input id="classLocation"
-placeholder="Example: Wilson Hall 101">
+<input id="classLocation" placeholder="Example: Wilson Hall 101">
 </div>
 
 <div>
 <label>Color</label>
-<input id="classColor"
-type="color"
-value="#6c63a8">
+<input id="classColor" type="color" value="#6c63a8">
 </div>
 
 <div>
@@ -647,30 +674,11 @@ value="#6c63a8">
 
 <div class="day-buttons">
 
-<label>
-<input type="checkbox" value="Monday">
-Mon
-</label>
-
-<label>
-<input type="checkbox" value="Tuesday">
-Tue
-</label>
-
-<label>
-<input type="checkbox" value="Wednesday">
-Wed
-</label>
-
-<label>
-<input type="checkbox" value="Thursday">
-Thu
-</label>
-
-<label>
-<input type="checkbox" value="Friday">
-Fri
-</label>
+<label><input type="checkbox" value="Monday"> Mon</label>
+<label><input type="checkbox" value="Tuesday"> Tue</label>
+<label><input type="checkbox" value="Wednesday"> Wed</label>
+<label><input type="checkbox" value="Thursday"> Thu</label>
+<label><input type="checkbox" value="Friday"> Fri</label>
 
 </div>
 
@@ -680,15 +688,13 @@ Fri
 
 <label>Notes</label>
 
-<textarea id="classNotes"
-placeholder="Optional class notes..."></textarea>
+<textarea id="classNotes" placeholder="Optional class notes..."></textarea>
 
 </div>
 
 <div class="full">
 
-<button class="primary"
-onclick="addClass()">
+<button class="primary" onclick="addClass()">
 Add Class
 </button>
 
@@ -717,54 +723,30 @@ Add Class
 <h2>🕐 Weekly Schedule</h2>
 
 <p>
-Your classes automatically appear here based on the information you enter under Classes.
+Your classes automatically appear here based on the information entered under Classes.
 </p>
 
 <div class="schedule">
 
 <div class="schedule-grid">
 
-<div class="schedule-cell schedule-header">
-Time
-</div>
+<div class="schedule-cell schedule-header">Time</div>
+<div class="schedule-cell schedule-header">Monday</div>
+<div class="schedule-cell schedule-header">Tuesday</div>
+<div class="schedule-cell schedule-header">Wednesday</div>
+<div class="schedule-cell schedule-header">Thursday</div>
+<div class="schedule-cell schedule-header">Friday</div>
+<div class="schedule-cell schedule-header">Saturday</div>
+<div class="schedule-cell schedule-header">Sunday</div>
 
-<div class="schedule-cell schedule-header">
-Monday
-</div>
-
-<div class="schedule-cell schedule-header">
-Tuesday
-</div>
-
-<div class="schedule-cell schedule-header">
-Wednesday
-</div>
-
-<div class="schedule-cell schedule-header">
-Thursday
-</div>
-
-<div class="schedule-cell schedule-header">
-Friday
-</div>
-
-<div class="schedule-cell schedule-header">
-Saturday
-</div>
-
-<div class="schedule-cell schedule-header">
-Sunday
-</div>
-
-<div id="scheduleRows"
-style="display:contents;">
-</div>
+<div id="scheduleRows" style="display:contents;"></div>
 
 </div>
 
 </div>
 
 </div>
+
 </div>
 
 <!-- GRADES -->
@@ -777,20 +759,27 @@ style="display:contents;">
 
 <div class="gpa-box">
 
-<div>Current GPA</div>
+<div>Current Overall GPA</div>
 
-<div class="gpa-number"
-id="overallGPA">
+<div class="gpa-number" id="overallGPA">
 —
 </div>
 
-<div id="gpaMessage">
+<div class="gpa-message" id="gpaMessage">
 Add grades to calculate your GPA.
 </div>
 
 </div>
 
-<h3>Add Grade</h3>
+<div class="tip-box">
+💡 Your GPA uses the grade-point scale you provided and is weighted by class credits.
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>➕ Add Grade</h2>
 
 <div class="form-grid">
 
@@ -806,48 +795,34 @@ Add grades to calculate your GPA.
 <div>
 <label>Assignment / Exam</label>
 
-<input id="gradeName"
-placeholder="Example: Midterm Exam">
+<input id="gradeName" placeholder="Example: Midterm Exam">
 
 </div>
 
 <div>
 <label>Points Earned</label>
 
-<input id="pointsEarned"
-type="number"
-min="0"
-step="0.01"
-placeholder="85">
+<input id="pointsEarned" type="number" min="0" step="0.01" placeholder="90">
 
 </div>
 
 <div>
 <label>Points Possible</label>
 
-<input id="pointsPossible"
-type="number"
-min="0"
-step="0.01"
-placeholder="100">
+<input id="pointsPossible" type="number" min="0" step="0.01" placeholder="100">
 
 </div>
 
 <div>
 <label>Class Credits</label>
 
-<input id="classCredits"
-type="number"
-min="0"
-step="0.5"
-placeholder="3">
+<input id="classCredits" type="number" min="0" step="0.5" placeholder="3">
 
 </div>
 
 <div class="full">
 
-<button class="primary"
-onclick="addGrade()">
+<button class="primary" onclick="addGrade()">
 Add Grade
 </button>
 
@@ -859,7 +834,7 @@ Add Grade
 
 <div class="card">
 
-<h2>📊 My Grades</h2>
+<h2>📊 Grade Breakdown</h2>
 
 <div id="gradesList"></div>
 
@@ -882,7 +857,23 @@ JSON.parse(localStorage.getItem("grades")) || [];
 
 let currentCalendarDate = new Date();
 
-const gradeScale = [
+/*
+GRADE SCALE
+A  = 4.0
+A- = 3.7
+B+ = 3.3
+B  = 3.0
+B- = 2.7
+C+ = 2.3
+C  = 2.0
+C- = 1.7
+D+ = 1.3
+D  = 1.0
+D- = 0.7
+F  = 0.0
+*/
+
+const gradeScale=[
 
 {letter:"A",points:4.0,min:93},
 
@@ -932,14 +923,10 @@ JSON.stringify(grades)
 function showSection(id,button){
 
 document.querySelectorAll(".section")
-.forEach(s =>
-s.classList.remove("active")
-);
+.forEach(s=>s.classList.remove("active"));
 
 document.querySelectorAll(".tab-button")
-.forEach(b =>
-b.classList.remove("active")
-);
+.forEach(b=>b.classList.remove("active"));
 
 document.getElementById(id)
 .classList.add("active");
@@ -959,7 +946,7 @@ renderGrades();
 
 function addAssignment(){
 
-const name =
+const name=
 document.getElementById("assignmentName")
 .value.trim();
 
@@ -1009,10 +996,10 @@ alert("Assignment added!");
 
 function renderAssignments(){
 
-const list =
+const list=
 document.getElementById("assignmentList");
 
-const filter =
+const filter=
 document.getElementById("filterAssignments").value;
 
 let filtered=[...assignments];
@@ -1047,8 +1034,7 @@ return;
 list.innerHTML=filtered.map(a=>{
 
 const dateText=a.date
-?new Date(a.date+"T00:00:00")
-.toLocaleDateString()
+?new Date(a.date+"T00:00:00").toLocaleDateString()
 :"No due date";
 
 return `
@@ -1184,7 +1170,7 @@ return new Date(a.date)-new Date(b.date);
 })
 .slice(0,5);
 
-const box =
+const box=
 document.getElementById("upcomingAssignments");
 
 if(upcoming.length===0){
@@ -1336,7 +1322,9 @@ ${escapeHtml(c.name)}
 
 <button class="danger"
 onclick="deleteClass(${c.id})">
+
 Delete
+
 </button>
 
 </div>
@@ -1355,7 +1343,7 @@ ${c.start&&c.end
 :"Not added"}<br>
 
 📅 Days:
-${c.days.length
+${c.days&&c.days.length
 ?c.days.join(", ")
 :"Not added"}
 
@@ -1398,7 +1386,8 @@ dropdown.innerHTML=
 
 classes.forEach(c=>{
 
-const option=document.createElement("option");
+const option=
+document.createElement("option");
 
 option.value=c.name;
 option.textContent=c.name;
@@ -1441,6 +1430,98 @@ return grade;
 }
 
 return gradeScale[gradeScale.length-1];
+
+}
+
+/*
+Calculate a class average from ALL grades
+in that class.
+*/
+function calculateClassGrade(className){
+
+const classGrades=
+grades.filter(g=>g.className===className);
+
+if(classGrades.length===0)
+return null;
+
+let totalEarned=0;
+let totalPossible=0;
+
+classGrades.forEach(g=>{
+
+totalEarned+=Number(g.earned);
+totalPossible+=Number(g.possible);
+
+});
+
+if(totalPossible<=0)
+return null;
+
+const percentage=
+(totalEarned/totalPossible)*100;
+
+const grade=
+getLetterGrade(percentage);
+
+const credits=
+Number(classGrades[0].credits)||0;
+
+return{
+
+percentage:percentage,
+
+grade:grade,
+
+credits:credits,
+
+totalEarned:totalEarned,
+
+totalPossible:totalPossible
+
+};
+
+}
+
+/*
+CORRECT CREDIT-WEIGHTED GPA
+
+Example:
+
+3-credit A- = 3.7 x 3 = 11.1 quality points
+
+4-credit B = 3.0 x 4 = 12 quality points
+
+GPA =
+total quality points / total credits
+*/
+function calculateGPA(){
+
+let totalQualityPoints=0;
+let totalCredits=0;
+
+classes.forEach(c=>{
+
+const result=
+calculateClassGrade(c.name);
+
+if(!result)
+return;
+
+if(result.credits<=0)
+return;
+
+totalQualityPoints+=
+result.grade.points*result.credits;
+
+totalCredits+=result.credits;
+
+});
+
+if(totalCredits===0)
+return null;
+
+return totalQualityPoints/totalCredits;
 
 }
 
@@ -1498,19 +1579,34 @@ return;
 
 if(earned>possible){
 
-alert("Points earned cannot be greater than points possible.");
+alert(
+"Points earned cannot be greater than points possible."
+);
 
 return;
 
 }
 
-if(isNaN(credits) || credits<=0){
+if(isNaN(credits)||credits<=0){
 
 alert("Please enter the class credits.");
 
 return;
 
 }
+
+/*
+If this class already has grades,
+automatically keep the original credit value.
+*/
+
+const existing=
+grades.find(g=>g.className===className);
+
+const finalCredits=
+existing
+?Number(existing.credits)
+:credits;
 
 const percentage=
 (earned/possible)*100;
@@ -1530,7 +1626,7 @@ earned:earned,
 
 possible:possible,
 
-credits:credits,
+credits:finalCredits,
 
 percentage:percentage,
 
@@ -1549,78 +1645,6 @@ document.getElementById("classCredits").value="";
 
 renderGrades();
 updateDashboard();
-
-}
-
-function calculateClassGrade(className){
-
-const classGrades=
-grades.filter(g=>g.className===className);
-
-if(classGrades.length===0)
-return null;
-
-let earned=0;
-let possible=0;
-
-classGrades.forEach(g=>{
-
-earned+=Number(g.earned);
-possible+=Number(g.possible);
-
-});
-
-const percentage=
-possible>0?(earned/possible)*100:0;
-
-return {
-
-percentage:percentage,
-
-grade:getLetterGrade(percentage)
-
-};
-
-}
-
-function calculateGPA(){
-
-if(classes.length===0)
-return null;
-
-let totalQualityPoints=0;
-let totalCredits=0;
-
-classes.forEach(c=>{
-
-const result=
-calculateClassGrade(c.name);
-
-if(!result)
-return;
-
-const classGradePoints=
-result.grade.points;
-
-const classGradeEntries=
-grades.filter(g=>g.className===c.name);
-
-const credits=
-classGradeEntries.length>0
-?Number(classGradeEntries[0].credits)
-:0;
-
-totalQualityPoints+=
-classGradePoints*credits;
-
-totalCredits+=credits;
-
-});
-
-if(totalCredits===0)
-return null;
-
-return totalQualityPoints/totalCredits;
 
 }
 
@@ -1645,7 +1669,8 @@ return;
 
 }
 
-const gpa=calculateGPA();
+const gpa=
+calculateGPA();
 
 document.getElementById("overallGPA")
 .textContent=
@@ -1655,7 +1680,7 @@ document.getElementById("gpaMessage")
 .textContent=
 gpa===null
 ?"Add grades to calculate your GPA."
-:"Based on the grades you have entered.";
+:"Your GPA is calculated using your class credits.";
 
 list.innerHTML="";
 
@@ -1682,8 +1707,16 @@ card.innerHTML=`
 
 <div class="grade-info">
 
-Current Average:
-${result.percentage.toFixed(1)}%
+Current Class Average:
+<b>${result.percentage.toFixed(1)}%</b>
+
+</div>
+
+<div class="progress-container">
+
+<div class="progress-bar"
+style="width:${Math.min(result.percentage,100)}%">
+</div>
 
 </div>
 
@@ -1692,6 +1725,58 @@ ${result.percentage.toFixed(1)}%
 <div class="class-grade-number">
 
 ${result.grade.letter}
+
+</div>
+
+</div>
+
+<div class="grade-summary">
+
+<div class="grade-summary-box">
+
+<div class="grade-summary-number">
+${result.percentage.toFixed(1)}%
+</div>
+
+<div class="grade-summary-label">
+Percentage
+</div>
+
+</div>
+
+<div class="grade-summary-box">
+
+<div class="grade-summary-number">
+${result.grade.points.toFixed(1)}
+</div>
+
+<div class="grade-summary-label">
+GPA Points
+</div>
+
+</div>
+
+<div class="grade-summary-box">
+
+<div class="grade-summary-number">
+${result.credits}
+</div>
+
+<div class="grade-summary-label">
+Credits
+</div>
+
+</div>
+
+<div class="grade-summary-box">
+
+<div class="grade-summary-number">
+${result.totalEarned}/${result.totalPossible}
+</div>
+
+<div class="grade-summary-label">
+Points
+</div>
 
 </div>
 
@@ -1731,7 +1816,7 @@ ${g.earned} / ${g.possible}
 
 (${g.percentage.toFixed(1)}%)
 
-· ${g.letter}
+→ ${g.letter}
 
 </div>
 
@@ -1906,6 +1991,7 @@ cell.className="schedule-cell";
 classes.forEach(c=>{
 
 if(
+c.days &&
 c.days.includes(day) &&
 c.start &&
 c.start.startsWith(time)
@@ -1943,15 +2029,17 @@ function formatTime(time){
 if(!time)
 return "";
 
-const [hour,minute]=time.split(":");
+const parts=time.split(":");
 
-let h=parseInt(hour);
+let hour=parseInt(parts[0]);
 
-const ampm=h>=12?"PM":"AM";
+const minute=parts[1];
 
-h=h%12||12;
+const ampm=hour>=12?"PM":"AM";
 
-return `${h}:${minute} ${ampm}`;
+hour=hour%12||12;
+
+return `${hour}:${minute} ${ampm}`;
 
 }
 
@@ -1968,6 +2056,7 @@ return div.innerHTML;
 
 updateClassDropdown();
 updateGradeClassDropdown();
+
 renderClasses();
 renderAssignments();
 updateDashboard();
