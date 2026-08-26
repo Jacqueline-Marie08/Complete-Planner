@@ -3943,3 +3943,42 @@ function scrollToSection(id) {
 }
 
 </style>
+<!-- FIX NAVIGATION -->
+
+<script>
+function fixPlannerNavigation() {
+
+  const sections = document.querySelectorAll(".planner-section");
+
+  if (sections.length >= 1) {
+    sections[0].id = "dashboardSection";
+  }
+
+  if (sections.length >= 2) {
+    sections[1].id = "classesSection";
+  }
+
+  if (sections.length >= 3) {
+    sections[2].id = "assignmentsSection";
+  }
+
+  if (sections.length >= 4) {
+    sections[3].id = "scheduleSection";
+  }
+
+  if (sections.length >= 5) {
+    sections[4].id = "notesSection";
+  }
+
+  if (sections.length >= 6) {
+    sections[5].id = "todoSection";
+  }
+
+  if (sections.length >= 7) {
+    sections[6].id = "calendarSection";
+  }
+
+}
+
+fixPlannerNavigation();
+</script>
