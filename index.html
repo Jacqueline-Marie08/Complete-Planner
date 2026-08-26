@@ -2527,3 +2527,377 @@ displaySchedule();
 displayTodos();
 
 </script>
+<!-- DASHBOARD & PROGRESS -->
+
+<section class="planner-section">
+  <h2>🏠 Student Dashboard</h2>
+
+  <div class="dashboard-grid">
+
+    <div class="dashboard-card">
+      <h3>📚 Classes</h3>
+      <p id="dashboardClasses">0</p>
+      <span>Classes added</span>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>📝 Assignments</h3>
+      <p id="dashboardAssignments">0</p>
+      <span>Total assignments</span>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>✅ Completed</h3>
+      <p id="dashboardCompleted">0</p>
+      <span>Assignments completed</span>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>📊 GPA</h3>
+      <p id="dashboardGPA">0.00</p>
+      <span>Current GPA</span>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="planner-section">
+  <h2>📈 Assignment Progress</h2>
+
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div id="assignmentProgress"></div>
+    </div>
+
+    <p id="progressText">
+      0% complete
+    </p>
+  </div>
+</section>
+
+
+<section class="planner-section">
+  <h2>⏰ Upcoming Assignments</h2>
+
+  <div id="upcomingAssignments">
+    <p>No upcoming assignments.</p>
+  </div>
+</section>
+
+
+<section class="planner-section">
+  <h2>📚 Semester Summary</h2>
+
+  <div class="semester-summary">
+
+    <div>
+      <strong>Total Credits</strong>
+      <p id="totalCredits">0</p>
+    </div>
+
+    <div>
+      <strong>Total Classes</strong>
+      <p id="totalClasses">0</p>
+    </div>
+
+    <div>
+      <strong>Completed Assignments</strong>
+      <p id="summaryCompleted">0</p>
+    </div>
+
+    <div>
+      <strong>Remaining Assignments</strong>
+      <p id="summaryRemaining">0</p>
+    </div>
+
+  </div>
+</section>
+
+
+<script>
+
+/* =========================
+   DASHBOARD UPDATE
+========================= */
+
+function updateDashboard() {
+
+  /* Classes */
+
+  const classCount =
+    typeof courses !== "undefined"
+      ? courses.length
+      : 0;
+
+  document.getElementById("dashboardClasses").textContent =
+    classCount;
+
+  document.getElementById("totalClasses").textContent =
+    classCount;
+
+
+  /* GPA */
+
+  if (typeof courses !== "undefined") {
+
+    let totalPoints = 0;
+    let totalCreditsValue = 0;
+
+    courses.forEach(course => {
+
+      if (
+        typeof gradePoints !== "undefined" &&
+        gradePoints[course.grade] !== undefined
+      ) {
+
+        totalPoints +=
+          gradePoints[course.grade] * course.credits;
+
+        totalCreditsValue +=
+          Number(course.credits);
+      }
+
+    });
+
+    const gpa =
+      totalCreditsValue === 0
+        ? 0
+        : totalPoints / totalCreditsValue;
+
+    document.getElementById("dashboardGPA").textContent =
+      gpa.toFixed(2);
+
+    document.getElementById("totalCredits").textContent =
+      totalCreditsValue;
+  }
+
+
+  /* Assignments */
+
+  let assignmentData = [];
+
+  if (typeof assignments !== "undefined") {
+    assignmentData = assignments;
+  } else {
+    assignmentData =
+      JSON.parse(localStorage.getItem("assignments")) || [];
+  }
+
+  document.getElementById("dashboardAssignments").textContent =
+    assignmentData.length;
+
+
+  /* Completed */
+
+  const completed =
+    assignmentData.filter(item =>
+      item.completed === true ||
+      item.status === "completed"
+    ).length;
+
+  document.getElementById("dashboardCompleted").textContent =
+    completed;
+
+  document.getElementById("summaryCompleted").textContent =
+    completed;
+
+  document.getElementById("summaryRemaining").textContent =
+    Math.max(assignmentData.length - completed, 0);
+
+
+  /* Progress */
+
+  const progress =
+    assignmentData.length === 0
+      ? 0
+      : Math.round(
+          (completed / assignmentData.length) * 100
+        );
+
+  document.getElementById("assignmentProgress").style.width =
+    progress + "%";
+
+  document.getElementById("progressText").textContent =
+    progress + "% complete";
+
+
+  /* Upcoming assignments */
+
+  displayUpcomingAssignments(assignmentData);
+}
+
+
+/* =========================
+   UPCOMING ASSIGNMENTS
+========================= */
+
+function displayUpcomingAssignments(assignmentData) {
+
+  const container =
+    document.getElementById("upcomingAssignments");
+
+  container.innerHTML = "";
+
+  if (assignmentData.length === 0) {
+
+    container.innerHTML =
+      "<p>No upcoming assignments.</p>";
+
+    return;
+  }
+
+  const upcoming =
+    assignmentData
+      .filter(item =>
+        !(item.completed === true ||
+          item.status === "completed")
+      )
+      .slice(0, 5);
+
+
+  if (upcoming.length === 0) {
+
+    container.innerHTML =
+      "<p>🎉 All assignments are completed!</p>";
+
+    return;
+  }
+
+
+  upcoming.forEach(item => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "upcoming-assignment";
+
+    div.innerHTML = `
+      <strong>
+        ${item.name || item.title || "Assignment"}
+      </strong>
+
+      ${
+        item.dueDate
+          ? `<span>Due: ${item.dueDate}</span>`
+          : ""
+      }
+
+      ${
+        item.priority
+          ? `<span>Priority: ${item.priority}</span>`
+          : ""
+      }
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+
+/* =========================
+   AUTOMATIC UPDATES
+========================= */
+
+updateDashboard();
+
+</script>
+
+
+<style>
+
+/* DASHBOARD */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(180px, 1fr));
+
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.dashboard-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  text-align: center;
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+}
+
+.dashboard-card p {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+
+/* PROGRESS BAR */
+
+.progress-container {
+  margin-top: 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background: #e5e5e5;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#assignmentProgress {
+  height: 100%;
+  width: 0%;
+  background: #6c8cff;
+  transition: width 0.4s ease;
+}
+
+#progressText {
+  text-align: center;
+  font-weight: bold;
+}
+
+
+/* UPCOMING ASSIGNMENTS */
+
+.upcoming-assignment {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+
+/* SEMESTER SUMMARY */
+
+.semester-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(160px, 1fr));
+
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.semester-summary > div {
+  padding: 18px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  text-align: center;
+}
+
+.semester-summary p {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 8px 0 0;
+}
+
+</style>
