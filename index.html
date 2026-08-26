@@ -1,905 +1,1281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Planner</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Planner</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-    body {
-      margin: 0;
-      background: #f5f6fa;
-      color: #263238;
-    }
+body {
+  margin: 0;
+  background: #f5f6fa;
+  color: #263238;
+}
 
-    header {
-      background: #6c63a8;
-      color: white;
-      padding: 25px;
-      text-align: center;
-    }
+header {
+  background: #6c63a8;
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 32px;
-    }
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
 
-    header p {
-      margin: 8px 0 0;
-    }
+header p {
+  margin: 8px 0 0;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
+.container {
+  max-width: 1150px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
 
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
 
-    .tab-button {
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      background: white;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0,0,0,.08);
-    }
+.tab-button {
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
 
-    .tab-button.active {
-      background: #6c63a8;
-      color: white;
-    }
+.tab-button.active {
+  background: #6c63a8;
+  color: white;
+}
 
-    .section {
-      display: none;
-    }
+.section {
+  display: none;
+}
 
-    .section.active {
-      display: block;
-    }
+.section.active {
+  display: block;
+}
 
-    .card {
-      background: white;
-      border-radius: 15px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.08);
-    }
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.08);
+}
 
-    h2 {
-      margin-top: 0;
-    }
+h2 {
+  margin-top: 0;
+}
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
 
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d5d5d5;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  font-size: 15px;
+}
 
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
 
-    .full {
-      grid-column: 1 / -1;
-    }
+.full {
+  grid-column: 1 / -1;
+}
 
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 11px 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-    .primary {
-      background: #6c63a8;
-      color: white;
-    }
+.primary {
+  background: #6c63a8;
+  color: white;
+}
 
-    .danger {
-      background: #e57373;
-      color: white;
-    }
+.danger {
+  background: #e57373;
+  color: white;
+}
 
-    .success {
-      background: #66bb6a;
-      color: white;
-    }
+.success {
+  background: #66bb6a;
+  color: white;
+}
 
-    .assignment {
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
-      padding: 18px;
-      margin-top: 15px;
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      align-items: center;
-    }
+.assignment {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+}
 
-    .assignment.completed {
-      opacity: .55;
-    }
+.assignment.completed {
+  opacity: .55;
+}
 
-    .assignment.completed .assignment-title {
-      text-decoration: line-through;
-    }
+.assignment.completed .assignment-title {
+  text-decoration: line-through;
+}
 
-    .assignment-title {
-      font-size: 19px;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
+.assignment-title {
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
 
-    .assignment-info {
-      color: #666;
-      font-size: 14px;
-      line-height: 1.7;
-    }
+.assignment-info {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.7;
+}
 
-    .priority {
-      display: inline-block;
-      padding: 4px 9px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      margin-left: 5px;
-    }
+.priority {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
 
-    .high {
-      background: #ffcdd2;
-      color: #b71c1c;
-    }
+.high {
+  background: #ffcdd2;
+  color: #b71c1c;
+}
 
-    .medium {
-      background: #fff3cd;
-      color: #856404;
-    }
+.medium {
+  background: #fff3cd;
+  color: #856404;
+}
 
-    .low {
-      background: #d9f2d9;
-      color: #2e7d32;
-    }
+.low {
+  background: #d9f2d9;
+  color: #2e7d32;
+}
 
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
-    .empty {
-      text-align: center;
-      padding: 30px;
-      color: #777;
-    }
+.empty {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+}
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 25px;
-    }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
 
-    .stat {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,.07);
-    }
+.stat {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+}
 
-    .stat-number {
-      font-size: 28px;
-      font-weight: bold;
-      color: #6c63a8;
-    }
+.stat-number {
+  font-size: 28px;
+  font-weight: bold;
+  color: #6c63a8;
+}
 
-    .stat-label {
-      color: #666;
-      margin-top: 5px;
-    }
+.stat-label {
+  color: #666;
+  margin-top: 5px;
+}
 
-    .class-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px;
-      border-bottom: 1px solid #eee;
-    }
+.class-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 15px;
+}
 
-    .class-item:last-child {
-      border-bottom: none;
-    }
+.class-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
 
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
-    }
+.class-name {
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    .calendar-day {
-      min-height: 100px;
-      background: #fafafa;
-      border: 1px solid #eee;
-      border-radius: 7px;
-      padding: 8px;
-    }
+.class-details {
+  color: #666;
+  line-height: 1.8;
+  margin-top: 10px;
+}
 
-    .calendar-date {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
 
-    .calendar-assignment {
-      background: #6c63a8;
-      color: white;
-      border-radius: 5px;
-      padding: 4px;
-      font-size: 11px;
-      margin-top: 4px;
-    }
+.calendar-day {
+  min-height: 100px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 7px;
+  padding: 8px;
+}
 
-    .day-name {
-      text-align: center;
-      font-weight: bold;
-      padding: 8px;
-    }
+.calendar-date {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
 
-    @media (max-width: 700px) {
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
+.calendar-assignment {
+  background: #6c63a8;
+  color: white;
+  border-radius: 5px;
+  padding: 4px;
+  font-size: 11px;
+  margin-top: 4px;
+}
 
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
+.day-name {
+  text-align: center;
+  font-weight: bold;
+  padding: 8px;
+}
 
-      .assignment {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+.schedule {
+  overflow-x: auto;
+}
 
-      .calendar-day {
-        min-height: 70px;
-        font-size: 12px;
-      }
-    }
-  </style>
+.schedule-grid {
+  min-width: 750px;
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  border: 1px solid #ddd;
+}
+
+.schedule-cell {
+  min-height: 75px;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 7px;
+}
+
+.schedule-header {
+  background: #f0eef9;
+  font-weight: bold;
+  text-align: center;
+}
+
+.schedule-time {
+  font-size: 12px;
+  color: #777;
+  text-align: center;
+}
+
+.schedule-class {
+  background: #6c63a8;
+  color: white;
+  border-radius: 7px;
+  padding: 7px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.day-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.day-buttons label {
+  background: #f0eef9;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.day-buttons input {
+  width: auto;
+}
+
+@media (max-width: 700px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .assignment {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
   <h1>📚 Student Planner</h1>
-  <p>Stay organized and keep up with your schoolwork!</p>
+  <p>Stay organized and keep up with your college life!</p>
 </header>
 
 <div class="container">
 
-  <div class="tabs">
-    <button class="tab-button active" onclick="showSection('dashboard', this)">🏠 Dashboard</button>
-    <button class="tab-button" onclick="showSection('assignments', this)">📝 Assignments</button>
-    <button class="tab-button" onclick="showSection('calendar', this)">📅 Calendar</button>
-    <button class="tab-button" onclick="showSection('classes', this)">📚 Classes</button>
-  </div>
+<div class="tabs">
+  <button class="tab-button active" onclick="showSection('dashboard',this)">🏠 Dashboard</button>
+  <button class="tab-button" onclick="showSection('assignments',this)">📝 Assignments</button>
+  <button class="tab-button" onclick="showSection('calendar',this)">📅 Calendar</button>
+  <button class="tab-button" onclick="showSection('classes',this)">📚 Classes</button>
+  <button class="tab-button" onclick="showSection('schedule',this)">🕐 Schedule</button>
+</div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="section active">
+<!-- DASHBOARD -->
 
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-number" id="totalCount">0</div>
-        <div class="stat-label">Total</div>
-      </div>
+<div id="dashboard" class="section active">
 
-      <div class="stat">
-        <div class="stat-number" id="activeCount">0</div>
-        <div class="stat-label">To Do</div>
-      </div>
+<div class="stats">
 
-      <div class="stat">
-        <div class="stat-number" id="completedCount">0</div>
-        <div class="stat-label">Completed</div>
-      </div>
+<div class="stat">
+<div class="stat-number" id="totalCount">0</div>
+<div class="stat-label">Total Assignments</div>
+</div>
 
-      <div class="stat">
-        <div class="stat-number" id="highCount">0</div>
-        <div class="stat-label">High Priority</div>
-      </div>
-    </div>
+<div class="stat">
+<div class="stat-number" id="activeCount">0</div>
+<div class="stat-label">To Do</div>
+</div>
 
-    <div class="card">
-      <h2>📌 Upcoming Assignments</h2>
-      <div id="upcomingAssignments"></div>
-    </div>
+<div class="stat">
+<div class="stat-number" id="completedCount">0</div>
+<div class="stat-label">Completed</div>
+</div>
 
-  </div>
+<div class="stat">
+<div class="stat-number" id="highCount">0</div>
+<div class="stat-label">High Priority</div>
+</div>
 
-  <!-- ASSIGNMENTS -->
-  <div id="assignments" class="section">
+</div>
 
-    <div class="card">
-      <h2>➕ Add Assignment</h2>
+<div class="card">
+<h2>📌 Upcoming Assignments</h2>
+<div id="upcomingAssignments"></div>
+</div>
 
-      <div class="form-grid">
+</div>
 
-        <div>
-          <label>Assignment Name</label>
-          <input id="assignmentName" type="text" placeholder="Example: Chapter 5 Homework">
-        </div>
+<!-- ASSIGNMENTS -->
 
-        <div>
-          <label>Class</label>
-          <select id="assignmentClass">
-            <option value="">Select a class</option>
-          </select>
-        </div>
+<div id="assignments" class="section">
 
-        <div>
-          <label>Due Date</label>
-          <input id="assignmentDate" type="date">
-        </div>
+<div class="card">
 
-        <div>
-          <label>Priority</label>
-          <select id="assignmentPriority">
-            <option value="High">High</option>
-            <option value="Medium" selected>Medium</option>
-            <option value="Low">Low</option>
-          </select>
-        </div>
+<h2>➕ Add Assignment</h2>
 
-        <div class="full">
-          <label>Notes</label>
-          <textarea id="assignmentNotes" placeholder="Optional notes..."></textarea>
-        </div>
+<div class="form-grid">
 
-        <div class="full">
-          <button class="primary" onclick="addAssignment()">Add Assignment</button>
-        </div>
+<div>
+<label>Assignment Name</label>
+<input id="assignmentName" type="text" placeholder="Example: Chapter 5 Homework">
+</div>
 
-      </div>
-    </div>
+<div>
+<label>Class</label>
+<select id="assignmentClass">
+<option value="">Select a class</option>
+</select>
+</div>
 
-    <div class="card">
-      <h2>📝 My Assignments</h2>
+<div>
+<label>Due Date</label>
+<input id="assignmentDate" type="date">
+</div>
 
-      <div style="margin-bottom:15px;">
-        <select id="filterAssignments" onchange="renderAssignments()">
-          <option value="all">All Assignments</option>
-          <option value="active">To Do</option>
-          <option value="completed">Completed</option>
-          <option value="high">High Priority</option>
-        </select>
-      </div>
+<div>
+<label>Priority</label>
+<select id="assignmentPriority">
+<option value="High">High</option>
+<option value="Medium" selected>Medium</option>
+<option value="Low">Low</option>
+</select>
+</div>
 
-      <div id="assignmentList"></div>
-    </div>
+<div class="full">
+<label>Notes</label>
+<textarea id="assignmentNotes" placeholder="Optional notes..."></textarea>
+</div>
 
-  </div>
+<div class="full">
+<button class="primary" onclick="addAssignment()">Add Assignment</button>
+</div>
 
-  <!-- CALENDAR -->
-  <div id="calendar" class="section">
+</div>
+</div>
 
-    <div class="card">
-      <h2>📅 Assignment Calendar</h2>
+<div class="card">
 
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-        <button class="primary" onclick="previousMonth()">← Previous</button>
-        <h3 id="calendarTitle"></h3>
-        <button class="primary" onclick="nextMonth()">Next →</button>
-      </div>
+<h2>📝 My Assignments</h2>
 
-      <div class="calendar-grid">
-        <div class="day-name">Sun</div>
-        <div class="day-name">Mon</div>
-        <div class="day-name">Tue</div>
-        <div class="day-name">Wed</div>
-        <div class="day-name">Thu</div>
-        <div class="day-name">Fri</div>
-        <div class="day-name">Sat</div>
-      </div>
+<select id="filterAssignments" onchange="renderAssignments()">
+<option value="all">All Assignments</option>
+<option value="active">To Do</option>
+<option value="completed">Completed</option>
+<option value="high">High Priority</option>
+</select>
 
-      <div id="calendarDays" class="calendar-grid"></div>
-    </div>
+<div id="assignmentList"></div>
 
-  </div>
+</div>
+</div>
 
-  <!-- CLASSES -->
-  <div id="classes" class="section">
+<!-- CALENDAR -->
 
-    <div class="card">
-      <h2>📚 My Classes</h2>
+<div id="calendar" class="section">
 
-      <div style="display:flex; gap:10px; margin-bottom:20px;">
-        <input id="className" type="text" placeholder="Example: Business Law">
-        <button class="primary" onclick="addClass()">Add Class</button>
-      </div>
+<div class="card">
 
-      <div id="classList"></div>
-    </div>
+<h2>📅 Assignment Calendar</h2>
 
-  </div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+<button class="primary" onclick="previousMonth()">← Previous</button>
+<h3 id="calendarTitle"></h3>
+<button class="primary" onclick="nextMonth()">Next →</button>
+</div>
+
+<div class="calendar-grid">
+<div class="day-name">Sun</div>
+<div class="day-name">Mon</div>
+<div class="day-name">Tue</div>
+<div class="day-name">Wed</div>
+<div class="day-name">Thu</div>
+<div class="day-name">Fri</div>
+<div class="day-name">Sat</div>
+</div>
+
+<div id="calendarDays" class="calendar-grid"></div>
+
+</div>
+</div>
+
+<!-- CLASSES -->
+
+<div id="classes" class="section">
+
+<div class="card">
+
+<h2>➕ Add Class</h2>
+
+<div class="form-grid">
+
+<div>
+<label>Class Name</label>
+<input id="className" placeholder="Example: Business Law">
+</div>
+
+<div>
+<label>Professor</label>
+<input id="classProfessor" placeholder="Professor name">
+</div>
+
+<div>
+<label>Location</label>
+<input id="classLocation" placeholder="Example: Wilson Hall 101">
+</div>
+
+<div>
+<label>Color</label>
+<input id="classColor" type="color" value="#6c63a8">
+</div>
+
+<div>
+<label>Start Time</label>
+<input id="classStart" type="time">
+</div>
+
+<div>
+<label>End Time</label>
+<input id="classEnd" type="time">
+</div>
+
+<div class="full">
+
+<label>Days</label>
+
+<div class="day-buttons">
+
+<label><input type="checkbox" value="Monday"> Mon</label>
+<label><input type="checkbox" value="Tuesday"> Tue</label>
+<label><input type="checkbox" value="Wednesday"> Wed</label>
+<label><input type="checkbox" value="Thursday"> Thu</label>
+<label><input type="checkbox" value="Friday"> Fri</label>
+
+</div>
+
+</div>
+
+<div class="full">
+<label>Notes</label>
+<textarea id="classNotes" placeholder="Optional class notes..."></textarea>
+</div>
+
+<div class="full">
+<button class="primary" onclick="addClass()">Add Class</button>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+<h2>📚 My Classes</h2>
+<div id="classList"></div>
+</div>
+
+</div>
+
+<!-- SCHEDULE -->
+
+<div id="schedule" class="section">
+
+<div class="card">
+
+<h2>🕐 Weekly Schedule</h2>
+
+<p>Your classes will automatically appear here based on the information you enter under <b>Classes</b>.</p>
+
+<div class="schedule">
+
+<div class="schedule-grid">
+
+<div class="schedule-cell schedule-header">Time</div>
+<div class="schedule-cell schedule-header">Monday</div>
+<div class="schedule-cell schedule-header">Tuesday</div>
+<div class="schedule-cell schedule-header">Wednesday</div>
+<div class="schedule-cell schedule-header">Thursday</div>
+<div class="schedule-cell schedule-header">Friday</div>
+<div class="schedule-cell schedule-header">Saturday</div>
+<div class="schedule-cell schedule-header">Sunday</div>
+
+<div id="scheduleRows" style="display:contents;"></div>
+
+</div>
+
+</div>
+
+</div>
+</div>
 
 </div>
 
 <script>
 
-  let assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+let assignments =
+JSON.parse(localStorage.getItem("assignments")) || [];
 
-  let classes = JSON.parse(localStorage.getItem("classes")) || [
-    "Business Law"
-  ];
+let classes =
+JSON.parse(localStorage.getItem("classes")) || [];
 
-  let currentCalendarDate = new Date();
+let currentCalendarDate = new Date();
 
-  function saveData() {
-    localStorage.setItem("assignments", JSON.stringify(assignments));
-    localStorage.setItem("classes", JSON.stringify(classes));
-  }
+function saveData() {
 
-  function showSection(sectionId, button) {
+localStorage.setItem(
+"assignments",
+JSON.stringify(assignments)
+);
 
-    document.querySelectorAll(".section").forEach(section => {
-      section.classList.remove("active");
-    });
+localStorage.setItem(
+"classes",
+JSON.stringify(classes)
+);
 
-    document.querySelectorAll(".tab-button").forEach(btn => {
-      btn.classList.remove("active");
-    });
+}
 
-    document.getElementById(sectionId).classList.add("active");
+function showSection(id,button) {
 
-    if (button) {
-      button.classList.add("active");
-    }
+document.querySelectorAll(".section").forEach(s =>
+s.classList.remove("active")
+);
 
-    if (sectionId === "calendar") {
-      renderCalendar();
-    }
-  }
+document.querySelectorAll(".tab-button").forEach(b =>
+b.classList.remove("active")
+);
 
-  function addAssignment() {
+document.getElementById(id).classList.add("active");
 
-    const name = document.getElementById("assignmentName").value.trim();
-    const className = document.getElementById("assignmentClass").value;
-    const date = document.getElementById("assignmentDate").value;
-    const priority = document.getElementById("assignmentPriority").value;
-    const notes = document.getElementById("assignmentNotes").value.trim();
+button.classList.add("active");
 
-    if (!name) {
-      alert("Please enter an assignment name.");
-      return;
-    }
+if(id === "calendar") renderCalendar();
 
-    const assignment = {
-      id: Date.now(),
-      name,
-      className,
-      date,
-      priority,
-      notes,
-      completed: false
-    };
+if(id === "schedule") renderSchedule();
 
-    assignments.push(assignment);
+}
 
-    saveData();
+function addAssignment() {
 
-    document.getElementById("assignmentName").value = "";
-    document.getElementById("assignmentDate").value = "";
-    document.getElementById("assignmentNotes").value = "";
+const name =
+document.getElementById("assignmentName").value.trim();
 
-    renderAssignments();
-    updateDashboard();
-    renderCalendar();
+if(!name) {
+alert("Please enter an assignment name.");
+return;
+}
 
-    alert("Assignment added!");
-  }
+const assignment = {
 
-  function renderAssignments() {
+id: Date.now(),
 
-    const list = document.getElementById("assignmentList");
+name:name,
 
-    const filter = document.getElementById("filterAssignments").value;
+className:
+document.getElementById("assignmentClass").value,
 
-    let filtered = [...assignments];
+date:
+document.getElementById("assignmentDate").value,
 
-    if (filter === "active") {
-      filtered = filtered.filter(a => !a.completed);
-    }
+priority:
+document.getElementById("assignmentPriority").value,
 
-    if (filter === "completed") {
-      filtered = filtered.filter(a => a.completed);
-    }
+notes:
+document.getElementById("assignmentNotes").value.trim(),
 
-    if (filter === "high") {
-      filtered = filtered.filter(a => a.priority === "High");
-    }
+completed:false
 
-    filtered.sort((a, b) => {
+};
 
-      if (!a.date) return 1;
-      if (!b.date) return -1;
+assignments.push(assignment);
 
-      return new Date(a.date) - new Date(b.date);
+saveData();
 
-    });
+document.getElementById("assignmentName").value="";
+document.getElementById("assignmentDate").value="";
+document.getElementById("assignmentNotes").value="";
 
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="empty">No assignments to show.</div>';
-      return;
-    }
+renderAssignments();
+updateDashboard();
+renderCalendar();
 
-    list.innerHTML = filtered.map(a => {
+alert("Assignment added!");
 
-      const dateText = a.date
-        ? new Date(a.date + "T00:00:00").toLocaleDateString()
-        : "No due date";
+}
 
-      return `
-        <div class="assignment ${a.completed ? "completed" : ""}">
+function renderAssignments() {
 
-          <div>
+const list =
+document.getElementById("assignmentList");
 
-            <div class="assignment-title">
-              ${escapeHtml(a.name)}
-            </div>
+const filter =
+document.getElementById("filterAssignments").value;
 
-            <div class="assignment-info">
+let filtered=[...assignments];
 
-              📚 ${escapeHtml(a.className || "No class")}<br>
+if(filter==="active")
+filtered=filtered.filter(a=>!a.completed);
 
-              📅 Due: ${dateText}<br>
+if(filter==="completed")
+filtered=filtered.filter(a=>a.completed);
 
-              ⭐ Priority:
-              <span class="priority ${a.priority.toLowerCase()}">
-                ${a.priority}
-              </span>
+if(filter==="high")
+filtered=filtered.filter(a=>a.priority==="High");
 
-              ${a.notes ? `<br>📌 ${escapeHtml(a.notes)}` : ""}
+filtered.sort((a,b)=>{
 
-            </div>
+if(!a.date)return 1;
+if(!b.date)return -1;
 
-          </div>
+return new Date(a.date)-new Date(b.date);
 
-          <div class="actions">
+});
 
-            <button class="success" onclick="toggleComplete(${a.id})">
-              ${a.completed ? "Undo" : "Complete"}
-            </button>
+if(filtered.length===0){
 
-            <button class="danger" onclick="deleteAssignment(${a.id})">
-              Delete
-            </button>
+list.innerHTML=
+'<div class="empty">No assignments to show.</div>';
 
-          </div>
+return;
 
-        </div>
-      `;
+}
 
-    }).join("");
-  }
+list.innerHTML=filtered.map(a=>{
 
-  function toggleComplete(id) {
+const dateText=a.date
+?new Date(a.date+"T00:00:00").toLocaleDateString()
+:"No due date";
 
-    const assignment = assignments.find(a => a.id === id);
+return `
 
-    if (assignment) {
-      assignment.completed = !assignment.completed;
-    }
+<div class="assignment ${a.completed?"completed":""}">
 
-    saveData();
+<div>
 
-    renderAssignments();
-    updateDashboard();
-    renderCalendar();
-  }
+<div class="assignment-title">
+${escapeHtml(a.name)}
+</div>
 
-  function deleteAssignment(id) {
+<div class="assignment-info">
 
-    if (!confirm("Delete this assignment?")) {
-      return;
-    }
+📚 ${escapeHtml(a.className||"No class")}<br>
 
-    assignments = assignments.filter(a => a.id !== id);
+📅 Due: ${dateText}<br>
 
-    saveData();
+⭐ Priority:
+<span class="priority ${a.priority.toLowerCase()}">
+${a.priority}
+</span>
 
-    renderAssignments();
-    updateDashboard();
-    renderCalendar();
-  }
+${a.notes?`<br>📌 ${escapeHtml(a.notes)}`:""}
 
-  function updateDashboard() {
+</div>
 
-    const total = assignments.length;
+</div>
 
-    const completed = assignments.filter(a => a.completed).length;
+<div class="actions">
 
-    const active = assignments.filter(a => !a.completed).length;
+<button class="success"
+onclick="toggleComplete(${a.id})">
+${a.completed?"Undo":"Complete"}
+</button>
 
-    const high = assignments.filter(
-      a => a.priority === "High" && !a.completed
-    ).length;
+<button class="danger"
+onclick="deleteAssignment(${a.id})">
+Delete
+</button>
 
-    document.getElementById("totalCount").textContent = total;
-    document.getElementById("activeCount").textContent = active;
-    document.getElementById("completedCount").textContent = completed;
-    document.getElementById("highCount").textContent = high;
+</div>
 
-    const upcoming = assignments
-      .filter(a => !a.completed)
-      .sort((a,b) => {
+</div>
 
-        if (!a.date) return 1;
-        if (!b.date) return -1;
+`;
 
-        return new Date(a.date) - new Date(b.date);
+}).join("");
 
-      })
-      .slice(0, 5);
+}
 
-    const upcomingContainer =
-      document.getElementById("upcomingAssignments");
+function toggleComplete(id){
 
-    if (upcoming.length === 0) {
+const a=assignments.find(x=>x.id===id);
 
-      upcomingContainer.innerHTML =
-        '<div class="empty">You have no upcoming assignments! 🎉</div>';
+if(a)a.completed=!a.completed;
 
-      return;
-    }
+saveData();
 
-    upcomingContainer.innerHTML = upcoming.map(a => {
+renderAssignments();
+updateDashboard();
+renderCalendar();
 
-      const dateText = a.date
-        ? new Date(a.date + "T00:00:00").toLocaleDateString()
-        : "No due date";
+}
 
-      return `
-        <div class="assignment">
+function deleteAssignment(id){
 
-          <div>
+if(!confirm("Delete this assignment?"))return;
 
-            <div class="assignment-title">
-              ${escapeHtml(a.name)}
-            </div>
+assignments=
+assignments.filter(a=>a.id!==id);
 
-            <div class="assignment-info">
-              📚 ${escapeHtml(a.className || "No class")}<br>
-              📅 ${dateText}
-            </div>
+saveData();
 
-          </div>
+renderAssignments();
+updateDashboard();
+renderCalendar();
 
-          <span class="priority ${a.priority.toLowerCase()}">
-            ${a.priority}
-          </span>
+}
 
-        </div>
-      `;
+function updateDashboard(){
 
-    }).join("");
-  }
+const total=assignments.length;
 
-  function addClass() {
+const completed=
+assignments.filter(a=>a.completed).length;
 
-    const input = document.getElementById("className");
+const active=
+assignments.filter(a=>!a.completed).length;
 
-    const name = input.value.trim();
+const high=
+assignments.filter(
+a=>a.priority==="High"&&!a.completed
+).length;
 
-    if (!name) {
-      alert("Please enter a class name.");
-      return;
-    }
+document.getElementById("totalCount").textContent=total;
 
-    if (classes.includes(name)) {
-      alert("That class already exists.");
-      return;
-    }
+document.getElementById("activeCount").textContent=active;
 
-    classes.push(name);
+document.getElementById("completedCount").textContent=completed;
 
-    saveData();
+document.getElementById("highCount").textContent=high;
 
-    input.value = "";
+const upcoming=
+assignments
+.filter(a=>!a.completed)
+.sort((a,b)=>{
 
-    renderClasses();
-    updateClassDropdown();
-  }
+if(!a.date)return 1;
+if(!b.date)return -1;
 
-  function deleteClass(name) {
+return new Date(a.date)-new Date(b.date);
 
-    if (!confirm(`Delete ${name}?`)) {
-      return;
-    }
+})
+.slice(0,5);
 
-    classes = classes.filter(c => c !== name);
+const box=
+document.getElementById("upcomingAssignments");
 
-    saveData();
+if(upcoming.length===0){
 
-    renderClasses();
-    updateClassDropdown();
-  }
+box.innerHTML=
+'<div class="empty">No upcoming assignments! 🎉</div>';
 
-  function renderClasses() {
+return;
 
-    const list = document.getElementById("classList");
+}
 
-    if (classes.length === 0) {
+box.innerHTML=upcoming.map(a=>{
 
-      list.innerHTML =
-        '<div class="empty">No classes added yet.</div>';
+const dateText=a.date
+?new Date(a.date+"T00:00:00").toLocaleDateString()
+:"No due date";
 
-      return;
-    }
+return `
 
-    list.innerHTML = classes.map(name => `
+<div class="assignment">
 
-      <div class="class-item">
+<div>
 
-        <strong>📚 ${escapeHtml(name)}</strong>
+<div class="assignment-title">
+${escapeHtml(a.name)}
+</div>
 
-        <button class="danger"
-          onclick="deleteClass('${escapeAttribute(name)}')">
-          Delete
-        </button>
+<div class="assignment-info">
+📚 ${escapeHtml(a.className||"No class")}<br>
+📅 ${dateText}
+</div>
 
-      </div>
+</div>
 
-    `).join("");
-  }
+<span class="priority ${a.priority.toLowerCase()}">
+${a.priority}
+</span>
 
-  function updateClassDropdown() {
+</div>
 
-    const dropdown =
-      document.getElementById("assignmentClass");
+`;
 
-    dropdown.innerHTML =
-      '<option value="">Select a class</option>';
+}).join("");
 
-    classes.forEach(name => {
+}
 
-      const option = document.createElement("option");
+function addClass(){
 
-      option.value = name;
-      option.textContent = name;
+const name=
+document.getElementById("className").value.trim();
 
-      dropdown.appendChild(option);
+if(!name){
 
-    });
-  }
+alert("Please enter a class name.");
 
-  function renderCalendar() {
+return;
 
-    const year = currentCalendarDate.getFullYear();
+}
 
-    const month = currentCalendarDate.getMonth();
+const days=
+Array.from(
+document.querySelectorAll(
+'.day-buttons input:checked'
+)
+).map(x=>x.value);
 
-    const monthName =
-      currentCalendarDate.toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric"
-      });
+const newClass={
 
-    document.getElementById("calendarTitle").textContent =
-      monthName;
+id:Date.now(),
 
-    const container =
-      document.getElementById("calendarDays");
+name:name,
 
-    container.innerHTML = "";
+professor:
+document.getElementById("classProfessor").value.trim(),
 
-    const firstDay =
-      new Date(year, month, 1).getDay();
+location:
+document.getElementById("classLocation").value.trim(),
 
-    const daysInMonth =
-      new Date(year, month + 1, 0).getDate();
+color:
+document.getElementById("classColor").value,
 
-    for (let i = 0; i < firstDay; i++) {
+start:
+document.getElementById("classStart").value,
 
-      const emptyDay = document.createElement("div");
+end:
+document.getElementById("classEnd").value,
 
-      emptyDay.className = "calendar-day";
+days:days,
 
-      container.appendChild(emptyDay);
+notes:
+document.getElementById("classNotes").value.trim()
 
-    }
+};
 
-    for (let day = 1; day <= daysInMonth; day++) {
+classes.push(newClass);
 
-      const cell = document.createElement("div");
+saveData();
 
-      cell.className = "calendar-day";
+document.getElementById("className").value="";
+document.getElementById("classProfessor").value="";
+document.getElementById("classLocation").value="";
+document.getElementById("classStart").value="";
+document.getElementById("classEnd").value="";
+document.getElementById("classNotes").value="";
 
-      const dateString =
-        `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+document
+.querySelectorAll(".day-buttons input")
+.forEach(x=>x.checked=false);
 
-      const dayAssignments =
-        assignments.filter(a => a.date === dateString);
+renderClasses();
+updateClassDropdown();
+renderSchedule();
 
-      cell.innerHTML =
-        `<div class="calendar-date">${day}</div>`;
+}
 
-      dayAssignments.forEach(a => {
+function renderClasses(){
 
-        const item =
-          document.createElement("div");
+const list=
+document.getElementById("classList");
 
-        item.className = "calendar-assignment";
+if(classes.length===0){
 
-        item.textContent = a.name;
+list.innerHTML=
+'<div class="empty">No classes added yet.</div>';
 
-        cell.appendChild(item);
+return;
 
-      });
+}
 
-      container.appendChild(cell);
+list.innerHTML=classes.map(c=>`
 
-    }
-  }
+<div class="class-card">
 
-  function previousMonth() {
+<div class="class-header">
 
-    currentCalendarDate.setMonth(
-      currentCalendarDate.getMonth() - 1
-    );
+<div class="class-name"
+style="border-left:6px solid ${c.color};padding-left:10px;">
+${escapeHtml(c.name)}
+</div>
 
-    renderCalendar();
-  }
+<button class="danger"
+onclick="deleteClass(${c.id})">
+Delete
+</button>
 
-  function nextMonth() {
+</div>
 
-    currentCalendarDate.setMonth(
-      currentCalendarDate.getMonth() + 1
-    );
+<div class="class-details">
 
-    renderCalendar();
-  }
+👩‍🏫 Professor:
+${escapeHtml(c.professor||"Not added")}<br>
 
-  function escapeHtml(text) {
+📍 Location:
+${escapeHtml(c.location||"Not added")}<br>
 
-    const div = document.createElement("div");
+🕐 Time:
+${c.start&&c.end
+?formatTime(c.start)+" - "+formatTime(c.end)
+:"Not added"}<br>
 
-    div.textContent = text;
+📅 Days:
+${c.days.length
+?c.days.join(", ")
+:"Not added"}
 
-    return div.innerHTML;
-  }
+${c.notes
+?`<br>📝 Notes: ${escapeHtml(c.notes)}`
+:""}
 
-  function escapeAttribute(text) {
+</div>
 
-    return text
-      .replace(/\\/g, "\\\\")
-      .replace(/'/g, "\\'");
-  }
+</div>
 
-  updateClassDropdown();
-  renderClasses();
-  renderAssignments();
-  updateDashboard();
-  renderCalendar();
+`).join("");
+
+}
+
+function deleteClass(id){
+
+if(!confirm("Delete this class?"))return;
+
+classes=
+classes.filter(c=>c.id!==id);
+
+saveData();
+
+renderClasses();
+updateClassDropdown();
+renderSchedule();
+
+}
+
+function updateClassDropdown(){
+
+const dropdown=
+document.getElementById("assignmentClass");
+
+dropdown.innerHTML=
+'<option value="">Select a class</option>';
+
+classes.forEach(c=>{
+
+const option=
+document.createElement("option");
+
+option.value=c.name;
+
+option.textContent=c.name;
+
+dropdown.appendChild(option);
+
+});
+
+}
+
+function renderCalendar(){
+
+const year=
+currentCalendarDate.getFullYear();
+
+const month=
+currentCalendarDate.getMonth();
+
+document.getElementById("calendarTitle")
+.textContent=
+currentCalendarDate.toLocaleDateString(
+"en-US",
+{
+month:"long",
+year:"numeric"
+}
+);
+
+const container=
+document.getElementById("calendarDays");
+
+container.innerHTML="";
+
+const firstDay=
+new Date(year,month,1).getDay();
+
+const days=
+new Date(year,month+1,0).getDate();
+
+for(let i=0;i<firstDay;i++){
+
+const empty=document.createElement("div");
+
+empty.className="calendar-day";
+
+container.appendChild(empty);
+
+}
+
+for(let day=1;day<=days;day++){
+
+const cell=
+document.createElement("div");
+
+cell.className="calendar-day";
+
+const dateString=
+`${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+
+cell.innerHTML=
+`<div class="calendar-date">${day}</div>`;
+
+assignments
+.filter(a=>a.date===dateString)
+.forEach(a=>{
+
+const item=
+document.createElement("div");
+
+item.className="calendar-assignment";
+
+item.textContent=a.name;
+
+cell.appendChild(item);
+
+});
+
+container.appendChild(cell);
+
+}
+
+}
+
+function previousMonth(){
+
+currentCalendarDate.setMonth(
+currentCalendarDate.getMonth()-1
+);
+
+renderCalendar();
+
+}
+
+function nextMonth(){
+
+currentCalendarDate.setMonth(
+currentCalendarDate.getMonth()+1
+);
+
+renderCalendar();
+
+}
+
+function renderSchedule(){
+
+const rows=
+document.getElementById("scheduleRows");
+
+rows.innerHTML="";
+
+const times=[];
+
+for(let hour=7;hour<=20;hour++){
+
+times.push(`${hour}:00`);
+
+}
+
+times.forEach(time=>{
+
+const timeCell=
+document.createElement("div");
+
+timeCell.className=
+"schedule-cell schedule-time";
+
+timeCell.textContent=
+formatTime(time);
+
+rows.appendChild(timeCell);
+
+const dayNames=[
+"Monday",
+"Tuesday",
+"Wednesday",
+"Thursday",
+"Friday",
+"Saturday",
+"Sunday"
+];
+
+dayNames.forEach(day=>{
+
+const cell=
+document.createElement("div");
+
+cell.className="schedule-cell";
+
+classes.forEach(c=>{
+
+if(
+c.days.includes(day) &&
+c.start &&
+c.start.startsWith(
+String(time.split(":")[0]).padStart(2,"0")
+)
+){
+
+const item=
+document.createElement("div");
+
+item.className="schedule-class";
+
+item.style.background=c.color;
+
+item.innerHTML=
+`<b>${escapeHtml(c.name)}</b><br>
+${c.location?escapeHtml(c.location):""}`;
+
+cell.appendChild(item);
+
+}
+
+});
+
+rows.appendChild(cell);
+
+});
+
+});
+
+}
+
+function formatTime(time){
+
+if(!time)return "";
+
+const [hour,minute]=time.split(":");
+
+let h=parseInt(hour);
+
+const ampm=h>=12?"PM":"AM";
+
+h=h%12||12;
+
+return `${h}:${minute} ${ampm}`;
+
+}
+
+function escapeHtml(text){
+
+const div=document.createElement("div");
+
+div.textContent=text;
+
+return div.innerHTML;
+
+}
+
+updateClassDropdown();
+renderClasses();
+renderAssignments();
+updateDashboard();
+renderCalendar();
+renderSchedule();
 
 </script>
 
